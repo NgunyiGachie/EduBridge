@@ -10,7 +10,7 @@ class Attendance(db.Model):
     attendance_status = db.Column(db.String, nullable=False)
     dates = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    students = db.relationship('Students', back_populates='attendance', lazy="dynamic", cascade="all, delete-orphan")
+    student = db.relationship('Student', back_populates='attendance', lazy="dynamic", cascade="all, delete-orphan")
     lecture = db.relationship('Lecture', back_populates='attendance', lazy="dynamic", cascade="all, delete-orphan")
 
     @validates('dates')

@@ -7,7 +7,7 @@ import re
 
 ph = PasswordHasher()
 
-class Students(db.Model):
+class Student(db.Model):
     __table__ = 'students'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -18,12 +18,12 @@ class Students(db.Model):
     profile_picture = db.Column(db.String)
 
     ##relationships
-    submissions = db.relationship('Submission', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
-    enrollments = db.relationship('Enrollment', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
-    grades = db.relationship('Grade', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
-    attendance = db.relationship('Attendance', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
-    comments = db.relationship('Comment', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
-    notifications = db.relationship('Notification', back_populates='students', lazy="dynamic", cascade="all, delete-orphan")
+    submissions = db.relationship('Submission', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    enrollments = db.relationship('Enrollment', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    grades = db.relationship('Grade', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    attendance = db.relationship('Attendance', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    notifications = db.relationship('Notification', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):
@@ -44,7 +44,7 @@ class Students(db.Model):
     def validate_username(self, key, username):
         if not username:
             raise AssertionError("No username provided")
-        if Students.query.filter(Students.username == username).first():
+        if Student.query.filter(Student.username == username).first():
             raise AssertionError("Username is already in use")
         if len(username) < 5 or len(username) > 20:
             raise AssertionError('Username must be between 5 and 20 characters')
@@ -54,7 +54,7 @@ class Students(db.Model):
     def validate_email(self, key, email):
         if not email:
             raise AssertionError('No email provided')
-        if Students.query.filter(Students.email == email).first():
+        if Student.query.filter(Student.email == email).first():
             raise AssertionError("Email is already in use")
         if '@' not in email:
             raise AssertionError("Invalid email")
@@ -77,7 +77,7 @@ class Students(db.Model):
         }
     
     def __repr__(self):
-        return f"<Students {self.username}, ID: {self.id}>"
+        return f"<Student {self.username}, ID: {self.id}>"
         
 
     

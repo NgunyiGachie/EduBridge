@@ -19,9 +19,9 @@ class Instructor(db.Model):
 
     ##relationships
     course = db.relationship('Course', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    lectures = db.relationship('Lecture', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
+    lecture = db.relationship('Lecture', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
     attendance = db.relationship('Attendance', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    comments = db.relationship('Comment', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
+    comment = db.relationship('Comment', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
     notifications = db.relationship('Notification', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
 
     @property
