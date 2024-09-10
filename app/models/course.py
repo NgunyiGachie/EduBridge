@@ -10,6 +10,7 @@ class Course(db.Model):
     schedule = db.Column(Json, nullable=False)
 
     instructor = db.relationship('Instructor', back_populates='course', lazy="dynamic", cascade="all, delete-orphan")
+    discussion = db.relationsip('Discussion', back_populates='course', lazy='dyamic', cascade='all, delete-orphan')
 
     @validates('course_info')
     def validate_course_info(self, key, value):
