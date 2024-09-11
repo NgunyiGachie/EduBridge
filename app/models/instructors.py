@@ -17,12 +17,11 @@ class Instructor(db.Model):
     department = db.Column(db.String, nullable=False)
     bio = db.Column(db.String)
 
-    ##relationships
     course = db.relationship('Course', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
     lecture = db.relationship('Lecture', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
     attendance = db.relationship('Attendance', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
     comment = db.relationship('Comment', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    notifications = db.relationship('Notification', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
+    notification = db.relationship('Notification', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):

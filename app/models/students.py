@@ -17,13 +17,12 @@ class Student(db.Model):
     _password_hash = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String)
 
-    ##relationships
     submissions = db.relationship('Submission', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
     enrollments = db.relationship('Enrollment', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
     grades = db.relationship('Grade', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
     attendance = db.relationship('Attendance', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
-    comments = db.relationship('Comment', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
-    notifications = db.relationship('Notification', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    comment = db.relationship('Comment', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
+    notification = db.relationship('Notification', back_populates='student', lazy="dynamic", cascade="all, delete-orphan")
 
     @property
     def password_hash(self):
