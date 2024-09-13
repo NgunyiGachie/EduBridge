@@ -5,6 +5,7 @@ argon2-cffi-bindings==21.2.0
 blinker==1.8.2
 cffi==1.17.1
 click==8.1.7
+cryptography==43.0.0
 Flask==3.0.3
 Flask-Argon2==0.3.0.0
 Flask-JWT-Extended==4.6.0
