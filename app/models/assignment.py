@@ -26,6 +26,8 @@ class Assignment(db.Model):
     def validate_due_date(self, key, value):
         if not isinstance(value, datetime):
             raise AttributeError(f"{key} must be a valid datetime")
+        if value <= datetime.now():
+            raise ValueError("Due date must be in the future")
         return value
     
     @validates('total_points')

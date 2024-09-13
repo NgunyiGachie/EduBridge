@@ -23,6 +23,8 @@ class File(db.Model):
     def validate_upload_date(self, key, value):
         if not isinstance(value, datetime):
             raise AttributeError(f"{key} must be a valid datetime")
+        if value > datetime.now():
+            raise ValueError(f"{key} cannot be in the future.")
         return value
     
     def to_dict(self):
