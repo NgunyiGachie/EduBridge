@@ -127,10 +127,34 @@ with app.app_context():
 
     # Seed Assignments
     assignments = [
-        Assignment(title='Introduction to Philosophy', course_id=1, due_date=datetime(2024, 11, 16)),
-        Assignment(title='Introduction to Biology', course_id=2, due_date=datetime(2024, 11, 16)),
-        Assignment(title='Introduction to Chemistry', course_id=3, due_date=datetime(2024, 11, 16)),
-        Assignment(title='Introduction to Government', course_id=4, due_date=datetime(2024, 11, 16))
+        Assignment(
+            title='Introduction to Philosophy',
+            description='Explain the allegory of the cave', 
+            course_id=1, 
+            due_date=datetime(2024, 11, 16),
+            total_points=70,
+            ),
+        Assignment(
+            title='Introduction to Biology', 
+            description='Prepare a dichotomous key',
+            course_id=2, 
+            due_date=datetime(2024, 11, 16),
+            total_points=50,
+            ),
+        Assignment(
+            title='Introduction to Chemistry',
+            description='Write an essay about radioactivity', 
+            course_id=3, 
+            due_date=datetime(2024, 11, 16),
+            total_points=30,
+            ),
+        Assignment(
+            title='Introduction to Government', 
+            description='Describe the concept of a social contract',
+            course_id=4, 
+            due_date=datetime(2024, 11, 16),
+            total_points=25,
+            )
     ]
 
     try:
@@ -147,28 +171,37 @@ with app.app_context():
     # Seed Lectures
     lectures = [
         Lecture(
+            lecture_info='ZOOL 102',
             instructor_id=1, 
             schedule=[
                 {"day": "Monday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
-            ]
+            ],
+            created_at=datetime(2024, 9, 16),
+            updated_at=datetime(2024, 9, 16)
             ),
         Lecture(
+            lecture_info='ECON 101',
             instructor_id=2, 
             schedule=[
                 {"day": "Monday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
-            ]
+            ],
+            created_at=datetime(2024, 9, 16),
+            updated_at=datetime(2024, 9, 16)
             ),
         Lecture(
+            lecture_info='ENG 202',
             instructor_id=3, 
             schedule=[
                 {"day": "Monday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                 {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
-            ]
+            ],
+            created_at=datetime(2024, 9, 16),
+            updated_at=datetime(2024, 9, 16)
             )
     ]
 
@@ -344,16 +377,18 @@ with app.app_context():
     notifications = [
         Notification(
             title='Class is at ten', 
-            message_body='Please attend the class', 
-            instructor_id='2', 
+            message_body='Please attend the class',
+            student_id=3, 
+            instructor_id=2, 
             read_status='read', 
             sent_date=datetime(2024, 9, 1, 9, 0, 0), 
             read_date=datetime(2024, 9, 1, 9, 0, 0),
             ),
         Notification(
             title='Postponed', 
-            message_body='I will not attend class', 
-            instructor_id='1', 
+            message_body='I will not attend class',
+            student_id=3, 
+            instructor_id=1, 
             read_status='unread', 
             sent_date=datetime(2024, 9, 1, 9, 0, 0), 
             read_date=datetime(2024, 9, 1, 9, 0, 0)
@@ -361,7 +396,8 @@ with app.app_context():
         Notification(
             title='Assignment', 
             message_body='Please check new assignment', 
-            instructor_id='2', 
+            student_id=2,
+            instructor_id=2, 
             read_status='read', 
             sent_date=datetime(2024, 9, 1, 9, 0, 0), 
             read_date=datetime(2024, 9, 1, 9, 0, 0)
@@ -369,15 +405,17 @@ with app.app_context():
         Notification(
             title='Deadline extension', 
             message_body='The deadline for assignment has been extended', 
-            instructor_id='2', 
+            student_id=3,
+            instructor_id=2, 
             read_status='read', 
             sent_date=datetime(2024, 9, 1, 9, 0, 0), 
             read_date=datetime(2024, 9, 1, 9, 0, 0)
             ),
         Notification(
             title='Class is at eleven', 
-            message_body='Class time has been pushed to eleven', 
-            instructor_id='3', 
+            message_body='Class time has been pushed to eleven',
+            student_id=1, 
+            instructor_id=3, 
             read_status='read', 
             sent_date=datetime(2024, 9, 1, 9, 0, 0), 
             read_date=datetime(2024, 9, 1, 9, 0, 0)
