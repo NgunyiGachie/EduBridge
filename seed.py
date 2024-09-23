@@ -24,7 +24,9 @@ config_name = os.getenv('FLASK_CONFIG', 'default')
 app.config.from_object(config[config_name])
 
 with app.app_context():
+    print("Dropping all tables...")
     db.drop_all()
+    print("Creating all tables...")
     db.create_all()
 
     students = [
@@ -67,8 +69,11 @@ with app.app_context():
     
     for student, password in zip(students, ['password1', 'password2', 'password3', 'password4', 'password5']):
         student.password_hash = ph.generate_password_hash(password).decode('utf-8')
+   
+    print("Adding students to the database...")
     db.session.add_all(students)
     db.session.commit()
+    print(f"{len(students)} students added.")
 
     instructors = [
         Instructor(
@@ -93,8 +98,11 @@ with app.app_context():
 
     for instructor, password in zip(instructors, ['password1', 'password2', 'password3']):
         instructor.password_hash = ph.generate_password_hash(password).decode('utf-8')
+    
+    print("Adding instructors to the database...")
     db.session.add_all(instructors)
     db.session.commit()
+    print(f"{len(instructors)} courses added.")
 
     ##Seed Courses
     courses = [
@@ -119,9 +127,11 @@ with app.app_context():
             "Friday": {"start": "09:00 AM", "end": "10:30 AM"}
         }),
     ]
-
+    
+    print("Adding courses to the database...")
     db.session.add_all(courses)
     db.session.commit()
+    print(f"{len(courses)} courses added.")
 
     ##Seed Assignments
     assignments = [
@@ -146,9 +156,11 @@ with app.app_context():
             due_date=datetime.striptime('2024-16-07T00:00:00', '%Y-%m-%dT%H:%M:%S')
             ),
     ]
-
+    
+    print("Adding assignments to the database...")
     db.session.add_all(assignments)
     db.session.commit()
+    print(f"{len(assignments)} assignments added.")
 
     #Seed Lectures
     lectures = [
@@ -178,8 +190,11 @@ with app.app_context():
             "Friday": {"start": "09:00 AM", "end": "10:30 AM"}
         }, created_at='', updated_at=''),
     ]
+    
+    print("Adding lectures to the database...")
     db.session.add_all(lectures)
     db.session.commit()
+    print(f"{len(lectures)} lectures added.")
 
     ##Seed attendance
     attendances = [
@@ -202,8 +217,12 @@ with app.app_context():
             dates=datetime.striptime('2024-16-07T00:00:00', '%Y-%m-%dT%H:%M:%S')
             )
     ]
+    
+    
+    print("Adding attendances to the database...")
     db.session.add_all(attendances)
     db.session.commit
+    print(f"{len(attendances)} attendances added.")
 
     #Seed Discussions
     discussions = [
@@ -243,8 +262,12 @@ with app.app_context():
             updated_at=datetime(2024, 9, 1, 10, 0, 0),
             ),
     ]
+    
+    
+    print("Adding discussions to the database...")
     db.session.add_all(discussions)
     db.session.commit()
+    print(f"{len(discussions)} discussions added.")
 
     #Seed Comments
     comments = [
@@ -289,8 +312,12 @@ with app.app_context():
             edited_at=datetime(2024, 9, 1, 10, 0, 0)
             ),
     ]
+    
+    
+    print("Adding comments to the database...")
     db.session.add_all(comments)
     db.session.commit()
+    print(f"{len(comments)} comments added.")
 
     #Seed Enrollments
     enrollments = [
@@ -300,8 +327,12 @@ with app.app_context():
         Enrollment(course_id='3', student_id='2', status='approved'),
         Enrollment(course_id='2', student_id='1', status='approved'),
     ]
+    
+    
+    print("Adding enrollments to the database...")
     db.session.add_all(enrollments)
     db.session.commit()
+    print(f"{len(enrollments)} enrollments added.")
 
     #Seed Grades
     grades = [
@@ -311,8 +342,12 @@ with app.app_context():
         Grade(student_id='4', course_id='2', grade='30', date_posted=datetime(2024, 9, 1, 10, 0, 0)),
         Grade(student_id='1', course_id='1', grade='34', date_posted=datetime(2024, 9, 1, 10, 0, 0)),
     ]
+    
+    
+    print("Adding grades to the database...")
     db.session.add_all(grades)
     db.session.commit()
+    print(f"{len(grades)} grades added.")
 
     #Seed Files
     files = [
@@ -342,8 +377,12 @@ with app.app_context():
             upload_date=datetime(2024, 9, 1, 9, 0, 0),
             ),
     ]
+    
+    
+    print("Adding students to the database...")
     db.session.add_all(files)
     db.session.commit()
+    print(f"{len(grades)} grades added.")
 
     #Seed Notifications
     notifications = [
@@ -388,8 +427,12 @@ with app.app_context():
             read_date=datetime(2024, 9, 1, 9, 0, 0)
             )
     ]
+    
+    
+    print("Adding notifications to the database...")
     db.session.add_all(notifications)
     db.session.commit()
+    print(f"{len(notifications)} notifications added.")
 
     #Seed Submissions
     submissions = [
@@ -429,5 +472,9 @@ with app.app_context():
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
     ]
+    
+    
+    print("Adding submissions to the database...")
     db.session.add_all(submissions)
     db.session.commit()
+    print(f"{len(submissions)} submissions added.")
