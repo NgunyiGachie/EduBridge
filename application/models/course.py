@@ -9,8 +9,10 @@ class Course(db.Model):
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
     schedule = db.Column(JSON, nullable=False)
 
-    instructor = db.relationship('Instructor', back_populates='course', lazy="dynamic", cascade="all, delete-orphan")
-    discussion = db.relationship('Discussion', back_populates='course', lazy='dyamic', cascade='all, delete-orphan')
+    instructor = db.relationship('Instructor', back_populates='course')
+    discussion = db.relationship('Discussion', back_populates='course', cascade='all, delete-orphan')
+    enrollment = db.relationship('Enrollment', back_populates='course', cascade='all, delete-orphan')
+    grade = db.relationship('Grade', back_populates='course', cascade='all, delete-orphan')
 
     @validates('course_info')
     def validate_course_info(self, key, value):
@@ -29,7 +31,7 @@ class Course(db.Model):
         for entry in schedule:
             if not isinstance(entry, dict):
                 raise ValueError("Each entry must be of type dictionary")
-            if 'day' not in entry or 'start_time' not in entry or 'end_time' not in entry:
+            if 'day' not in entry or 'start' not in entry or 'end' not in entry:
                 raise ValueError("Each entry must contain the day, start time, and end time")
         return schedule
     

@@ -10,9 +10,9 @@ class Grade(db.Model):
     grade = db.Column(db.Integer, nullable=False)
     date_posted = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    student = db.relationship('Student', back_populates='grade', lazy='dynamic', cascade='all, delete-orphan')
-    course = db.relationship('Course', back_populates='grade', lazy='dynamic', cascade='all, delete-orphan')
-    submission = db.relationship('Submission', back_populates='grade', lazy='dynamic', cascade='all, delete-orphan')
+    student = db.relationship('Student', back_populates='grade')
+    course = db.relationship('Course', back_populates='grade')
+    submission = db.relationship('Submission', back_populates='grade', cascade='all, delete-orphan')
 
     @validates('grade')
     def validate_grade(self, key, grade):

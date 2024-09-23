@@ -11,7 +11,8 @@ class Discussion(db.Model):
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    course = db.relationship('Course', back_populates='discussion', lazy='dynamic', cascade='all, delete-orphan')
+    course = db.relationship('Course', back_populates='discussion')
+    comments = db.relationship('Comment', back_populates='discussion', cascade='all, delete-orphan')
 
     @validates('title', 'description')
     def validate_strings(self, key, value):

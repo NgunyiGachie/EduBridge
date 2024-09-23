@@ -7,11 +7,13 @@ class Attendance(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
     lecture_id = db.Column(db.Integer, db.ForeignKey("lectures.id"), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False) 
     attendance_status = db.Column(db.String, nullable=False)
     dates = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    student = db.relationship('Student', back_populates='attendance', lazy="dynamic", cascade="all, delete-orphan")
-    lecture = db.relationship('Lecture', back_populates='attendance', lazy="dynamic", cascade="all, delete-orphan")
+    student = db.relationship('Student', back_populates='attendance')
+    lecture = db.relationship('Lecture', back_populates='attendance')
+    instructor = db.relationship('Instructor', back_populates='attendance')
 
     @validates('dates')
     def validate_dates(self, key, value):

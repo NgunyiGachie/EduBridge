@@ -11,8 +11,8 @@ class Assignment(db.Model):
     due_date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     total_points = db.Column(db.Integer, nullable=False)
 
-    course = db.relationship('Course', back_populates='assignment', lazy="dynamic", cascade="all, delete-orphan")
-    submission = db.relationship('Submission', back_populates='assignment', lazy="dynamic", cascade="all, delete-orphan")
+    course = db.relationship('Course', single_parent=True)
+    submission = db.relationship('Submission', back_populates='assignment', cascade="all, delete-orphan")
 
     @validates('title', 'description')
     def validate_strings(self, key, value):

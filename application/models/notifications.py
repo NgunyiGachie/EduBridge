@@ -13,8 +13,8 @@ class Notification(db.Model):
     sent_date = db.Column(db.DateTime, server_default= db.func.now(), nullable=False)
     read_date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    student = db.relationship('Student', back_populates='notification', lazy='dynamic', cascade='all, delete-orphan')
-    instructor = db.relationship('Instructor', back_populates='notification', lazy='dynamic', cascade='all, delete-orphan')
+    student = db.relationship('Student', back_populates='notification')
+    instructor = db.relationship('Instructor', back_populates='notification')
 
     @validates('title', 'message_body')
     def validate_strings(self, key, value):

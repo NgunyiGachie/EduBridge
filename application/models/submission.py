@@ -11,9 +11,9 @@ class Submission(db.Model):
     grade_id = db.Column(db.Integer, db.ForeignKey('grades.id'), nullable=False)
     date = db.Column(db.DateTime, server_default = db.func.now(), nullable=False)
 
-    assignment = db.relationship('Assignment', back_populates='submission', lazy='dynamic', cascade='all, delete-orphan')
-    student = db.relationship('Student', back_populates='submission', lazy='dynamic', cascade='all, delete-orphan')
-    grade = db.relationship('Grade', back_populates='submission', lazy='dynamic', cascade='all, delete-orphan')
+    assignment = db.relationship('Assignment', back_populates='submission')
+    student = db.relationship('Student', back_populates='submission')
+    grade = db.relationship('Grade', back_populates='submission')
 
     @validates('submission_info')
     def validate_submission_info(self, key, value):

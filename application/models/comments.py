@@ -12,9 +12,9 @@ class Comment(db.Model):
     posted_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     edited_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
-    discussion = db.relationship('Discussion', back_populates='comment', lazy="dynamic", cascade="all, delete-orphan")
-    student = db.relationship('Student', back_populates='comment', lazy="dynamic", cascade="all, delete-orphan")
-    instructor = db.relationship('Instructor', back_populates='comment', lazy="dynamic", cascade="all, delete-orphan")
+    discussion = db.relationship('Discussion', back_populates='comments')
+    student = db.relationship('Student', back_populates='comments')
+    instructor = db.relationship('Instructor', back_populates='comments')
 
     @validates('content')
     def validate_content(self, key, content):

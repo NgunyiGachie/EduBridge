@@ -8,8 +8,8 @@ class Enrollment(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     status = db.Column(db.String, nullable=False)
 
-    course = db.relationship('Course', back_populates='enrollment', lazy='dynamic', cascade='all, delete-orphan')
-    student = db.relationship('Student', back_populates='enrollment', lazy='dynamic', cascade='all, delete-orphan')
+    course = db.relationship('Course', back_populates='enrollment')
+    student = db.relationship('Student', back_populates='enrollment')
 
     @validates('status')
     def validate_status(self, key, status):

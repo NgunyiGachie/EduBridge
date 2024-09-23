@@ -17,11 +17,11 @@ class Instructor(db.Model):
     department = db.Column(db.String, nullable=False)
     bio = db.Column(db.String)
 
-    course = db.relationship('Course', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    lecture = db.relationship('Lecture', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    attendance = db.relationship('Attendance', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    comment = db.relationship('Comment', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
-    notification = db.relationship('Notification', back_populates='instructor', lazy="dynamic", cascade="all, delete-orphan")
+    course = db.relationship('Course', back_populates='instructor', cascade="all, delete-orphan")
+    lecture = db.relationship('Lecture', back_populates='instructor', cascade="all, delete-orphan")
+    attendance = db.relationship('Attendance', back_populates='instructor', cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='instructor', cascade="all, delete-orphan")
+    notification = db.relationship('Notification', back_populates='instructor', cascade="all, delete-orphan")
 
     @property
     def password_hash(self):
@@ -63,7 +63,7 @@ class Instructor(db.Model):
         return profile_picture
     
     @validates('department')
-    def validate_department(self, department):
+    def validate_department(self, key, department):
         if not isinstance(department, str):
             raise ValueError("Department must be a string")
         if not department.strip():
