@@ -2,10 +2,10 @@ from database import db
 from sqlalchemy.orm import validates
 
 class Enrollment(db.Model):
-    __table__ = 'enrollments'
+    __tablename__  = 'enrollments'
     id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     status = db.Column(db.String, nullable=False)
 
     course = db.relationship('Course', back_populates='enrollment', lazy='dynamic', cascade='all, delete-orphan')

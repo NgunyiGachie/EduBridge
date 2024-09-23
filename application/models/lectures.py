@@ -1,14 +1,14 @@
 from database import db
 from sqlalchemy.orm import validates
-from sqlalchemy import Json
+from sqlalchemy.types import JSON
 from datetime import datetime
 
 class Lecture(db.Model):
-    __table__ = 'lectures'
+    __tablename__  = 'lectures'
     id = db.Column(db.Integer, primary_key=True)
     lecture_info = db.Column(db.String, nullable=False)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
-    schedule = db.Column(Json, nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
+    schedule = db.Column(JSON, nullable=False)
     created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     updated_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 

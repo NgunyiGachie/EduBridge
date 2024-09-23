@@ -3,12 +3,12 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Submission(db.Model):
-    __table__ = 'submissions'
+    __tablename__  = 'submissions'
     id = db.Column(db.Integer, primary_key=True)
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
+    assignment_id = db.Column(db.Integer, db.ForeignKey('assignments.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     submission_info = db.Column(db.String, nullable=False)
-    grade_id = db.Column(db.Integer, db.ForeignKey('grade.id'), nullable=False)
+    grade_id = db.Column(db.Integer, db.ForeignKey('grades.id'), nullable=False)
     date = db.Column(db.DateTime, server_default = db.func.now(), nullable=False)
 
     assignment = db.relationship('Assignment', back_populates='submission', lazy='dynamic', cascade='all, delete-orphan')

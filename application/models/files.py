@@ -3,7 +3,7 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class File(db.Model):
-    __table__ = 'files'
+    __tablename__  = 'files'
     id = db.Column(db.Integer, primary_key=True)
     file_info = db.Column(db.String, nullable=False)
     related_to = db.Column(db.String, nullable=False)

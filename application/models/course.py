@@ -1,16 +1,16 @@
 from database import db
 from sqlalchemy.orm import validates
-from sqlalchemy import Json
+from sqlalchemy.types import JSON
 
 class Course(db.Model):
-    __table__ = 'courses'
+    __tablename__  = 'courses'
     id = db.Column(db.Integer, primary_key=True)
     course_info = db.Column(db.String, nullable=False)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
-    schedule = db.Column(Json, nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
+    schedule = db.Column(JSON, nullable=False)
 
     instructor = db.relationship('Instructor', back_populates='course', lazy="dynamic", cascade="all, delete-orphan")
-    discussion = db.relationsip('Discussion', back_populates='course', lazy='dyamic', cascade='all, delete-orphan')
+    discussion = db.relationship('Discussion', back_populates='course', lazy='dyamic', cascade='all, delete-orphan')
 
     @validates('course_info')
     def validate_course_info(self, key, value):

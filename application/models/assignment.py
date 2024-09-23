@@ -3,11 +3,11 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Assignment(db.Model):
-    __table__ = 'assignments'
+    __tablename__  = 'assignments'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     due_date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     total_points = db.Column(db.Integer, nullable=False)
 

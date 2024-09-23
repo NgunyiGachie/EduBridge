@@ -3,12 +3,12 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Notification(db.Model):
-    __table__ = 'notifications'
+    __tablename__  = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
     message_body = db.Column(db.String, nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id', nullable=False))
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
     read_status = db.Column(db.String, nullable=False)
     sent_date = db.Column(db.DateTime, server_default= db.func.now(), nullable=False)
     read_date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)

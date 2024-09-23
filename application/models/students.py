@@ -8,7 +8,7 @@ import re
 ph = PasswordHasher()
 
 class Student(db.Model):
-    __table__ = 'students'
+    __tablename__  = 'students'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
     first_name = db.Column(db.String(80), nullable=False)

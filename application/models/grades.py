@@ -3,10 +3,10 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Grade(db.Model):
-    __table__ = 'grades'
+    __tablename__  = 'grades'
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     date_posted = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 

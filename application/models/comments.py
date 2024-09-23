@@ -3,11 +3,11 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Comment(db.Model):
-    __table__ = 'comments'
+    __tablename__  = 'comments'
     id = db.Column(db.Integer, primary_key=True)
-    discussion_id = db.Column(db.Integer, db.ForeignKey('discussion.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), nullable=False)
-    instructor_id = db.Column(db.Integer, db.ForeignKey('instructor.id'), nullable=False)
+    discussion_id = db.Column(db.Integer, db.ForeignKey('discussions.id'), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
+    instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
     content = db.Column(db.String)
     posted_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
     edited_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)

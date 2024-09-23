@@ -3,10 +3,10 @@ from sqlalchemy.orm import validates
 from datetime import datetime
 
 class Attendance(db.Model):
-    __table__ = 'attendances'
+    __tablename__  = 'attendances'
     id = db.Column(db.Integer, primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey("student.id", nullable=False))
-    lecture_id = db.Column(db.Integer, db.ForeignKey("lecture.id", nullable=False))
+    student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
+    lecture_id = db.Column(db.Integer, db.ForeignKey("lectures.id"), nullable=False)
     attendance_status = db.Column(db.String, nullable=False)
     dates = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
 
