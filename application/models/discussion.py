@@ -1,8 +1,7 @@
 from database import db
-from sqlalchemy.orm import validates
-from datetime import datetime
+from application.utils.validation_mixin import ValidationMixin
 
-class Discussion(db.Model):
+class Discussion(db.Model, ValidationMixin):
     __tablename__   = 'discussions'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -14,24 +13,6 @@ class Discussion(db.Model):
     course = db.relationship('Course', back_populates='discussion')
     comments = db.relationship('Comment', back_populates='discussion', cascade='all, delete-orphan')
 
-    @validates('title', 'description')
-    def validate_strings(self, key, value):
-        if value is None:
-            raise ValueError("Title and description cannot be None")
-        if not isinstance(value, str):
-            raise ValueError("Title and description must be of type string")
-        if len(value) <= 0:
-            raise ValueError("Title and description must be at least one character")
-        return value
-    
-    @validates('created_at', 'updated_at')
-    def validate_dates(self, key, value):
-        if not isinstance(value, datetime):
-            raise AttributeError(f"{key} must be a valid datetime")
-        if value > datetime.now():
-            raise ValueError(f"{key} cannot be in the future.")
-        return value
-    
     def to_dict(self):
         return {
             'id': self.id,

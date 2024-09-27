@@ -1,8 +1,7 @@
 from database import db
-from sqlalchemy.orm import validates
-from datetime import datetime
+from application.utils.validation_mixin import ValidationMixin
 
-class Assignment(db.Model):
+class Assignment(db.Model, ValidationMixin):
     __tablename__  = 'assignments'
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     title = db.Column(db.String, nullable=False)
@@ -14,31 +13,6 @@ class Assignment(db.Model):
     course = db.relationship('Course', single_parent=True)
     submission = db.relationship('Submission', back_populates='assignment', cascade="all, delete-orphan")
 
-    @validates('title', 'description')
-    def validate_strings(self, key, value):
-        if not value or not isinstance(value, str):
-            raise ValueError(f"{key} must be a string")
-        if not value.strip():
-            raise ValueError(f'{key} must be a non-empty string')
-        return value
-    
-    @validates('due_date')
-    def validate_due_date(self, key, value):
-        if not isinstance(value, datetime):
-            raise AttributeError(f"{key} must be a valid datetime")
-        if value <= datetime.now():
-            raise ValueError("Due date must be in the future")
-        return value
-    
-    @validates('total_points')
-    def validate_total_points(self, key, total_points):
-        if total_points is None:
-            raise ValueError("Total points cannot be None")
-        if not isinstance(total_points, int):
-            raise ValueError("Total points must be an integer")
-        if total_points < 0:
-            raise ValueError("Total points must be greater than or equal to zero")
-        return total_points
     
     def to_dict(self):
         return {

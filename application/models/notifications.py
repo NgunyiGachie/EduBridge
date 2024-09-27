@@ -1,8 +1,7 @@
 from database import db
-from sqlalchemy.orm import validates
-from datetime import datetime
+from application.utils.validation_mixin import ValidationMixin
 
-class Notification(db.Model):
+class Notification(db.Model, ValidationMixin):
     __tablename__  = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -15,34 +14,6 @@ class Notification(db.Model):
 
     student = db.relationship('Student', back_populates='notification')
     instructor = db.relationship('Instructor', back_populates='notification')
-
-    @validates('title', 'message_body')
-    def validate_strings(self, key, value):
-        if value is None:
-            raise AssertionError("Title and message body cannot be None")
-        if not isinstance(value, str):
-            raise AssertionError("Title and message body must be of type string")
-        if len(value) <= 0:
-            raise AssertionError("Title and message body must be at least one character")
-        return value
-    
-    @validates('read_status')
-    def validate_read_status(self, key, value):
-        if value is None:
-            raise AssertionError("Read status cannot be None")
-        if not isinstance(value, str):
-            raise AssertionError("Read status must be of type string")
-        if value not in ["read", 'unread']:
-            raise AssertionError("Read status must be either read or unread")
-        return value
-    
-    @validates('sent_date', 'read_date')
-    def validate_dates(self, key, value):
-        if not isinstance(value, datetime):
-            raise AttributeError(f"{key} must be a valid datetime")
-        if value > datetime.now():
-            raise ValueError(f"{key} cannot be in the future.")
-        return value
     
     def to_dict(self):
         return {

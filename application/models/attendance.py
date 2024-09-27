@@ -1,8 +1,7 @@
 from database import db
-from sqlalchemy.orm import validates
-from datetime import datetime
+from application.utils.validation_mixin import ValidationMixin
 
-class Attendance(db.Model):
+class Attendance(db.Model, ValidationMixin):
     __tablename__  = 'attendances'
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
@@ -13,26 +12,7 @@ class Attendance(db.Model):
 
     student = db.relationship('Student', back_populates='attendance')
     lecture = db.relationship('Lecture', back_populates='attendance')
-    instructor = db.relationship('Instructor', back_populates='attendance')
-
-    @validates('dates')
-    def validate_dates(self, key, value):
-        if not isinstance(value, datetime):
-            raise AttributeError(f"{key} must be a valid datetime")
-        if value > datetime.now():
-            raise ValueError(f"{key} cannot be in the future.")
-        return value
-    
-    @validates('attendance_status')
-    def validates_attendance_status(self, key, attendance_status):
-        if not isinstance(attendance_status, str):
-            raise ValueError("Attendance status must be a string")
-        attendance_status = attendance_status.strip().lower()
-        if attendance_status is None:
-            return ValueError("Attendance status cannot be None")
-        if attendance_status not in ['present', 'absent']:
-            return ValueError('Attendance status must be either present or absent')
-        return attendance_status
+    instructor = db.relationship('Instructor', back_populates='attendance') 
     
     def to_dict(self):
         return {

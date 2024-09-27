@@ -1,13 +1,12 @@
 from database import db
-from sqlalchemy.ext.hybrid import hybrid_property
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from sqlalchemy.orm import validates
-import re
+from application.utils.validation_mixin import ValidationMixin
 
 ph = PasswordHasher()
 
-class Student(db.Model):
+class Student(db.Model, ValidationMixin):
     __tablename__  = 'students'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String, nullable=False, unique=True)
@@ -59,11 +58,6 @@ class Student(db.Model):
             raise AssertionError("Invalid email")
         return email
     
-    @validates('profile_picture')
-    def validate_profile_picture(self, key, profile_picture):
-        if not re.match(r'^https?://', profile_picture):
-            raise AttributeError(f'{key} must be a valid URL')
-        return profile_picture
     
     def to_dict(self):
         return {

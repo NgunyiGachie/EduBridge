@@ -1,13 +1,12 @@
 from database import db
-from sqlalchemy.ext.hybrid import hybrid_property
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from sqlalchemy.orm import validates
-import re
+from application.utils.validation_mixin import ValidationMixin
 
 ph = PasswordHasher()
 
-class Instructor(db.Model):
+class Instructor(db.Model, ValidationMixin):
     __tablename__  = 'instructors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -38,14 +37,6 @@ class Instructor(db.Model):
         except VerificationError:
             return False
         
-    @validates("name")
-    def validate_username(self, key, name):
-        if not name:
-            raise AssertionError("No username provided")
-        if len(name) < 5 or len(name) > 20:
-            raise AssertionError('Username must be between 5 and 20 characters')
-        return name
-    
     @validates('email')
     def validate_email(self, key, email):
         if not email:
@@ -55,20 +46,6 @@ class Instructor(db.Model):
         if '@' not in email:
             raise AssertionError("Invalid email")
         return email
-    
-    @validates('profile_picture')
-    def validate_profile_picture(self, key, profile_picture):
-        if not re.match(r'^https?://', profile_picture):
-            raise AttributeError(f'{key} must be a valid URL')
-        return profile_picture
-    
-    @validates('department')
-    def validate_department(self, key, department):
-        if not isinstance(department, str):
-            raise ValueError("Department must be a string")
-        if not department.strip():
-            raise ValueError('Department must be a non-empty string')
-        return department
     
     def to_dict(self):
         return {
