@@ -64,7 +64,7 @@ class TestAttendance:
 
             try:
                 attendance = Attendance(
-                    lecture_id=1,
+                    student_id=1,
                     instructor_id=1,
                     attendance_status=1,
                     attendance_status="present",
@@ -99,6 +99,7 @@ class TestAttendance:
     
     def test_student_id_must_be_integer(self):
         """Requires student_id to be an integer"""
+        
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -119,6 +120,7 @@ class TestAttendance:
 
     def test_lecture_id_must_be_integer(self):
         """Requires lecture_id to be an integer"""
+        
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -139,6 +141,7 @@ class TestAttendance:
 
     def test_instructor_id_must_be_integer(self):
         """Requires instructor_id to be an integer"""
+        
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -203,6 +206,7 @@ class TestAttendance:
 
     def test_duplicate_attendance(self):
         """Rejects duplicate attendance records for the same student and lecture"""
+        
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
