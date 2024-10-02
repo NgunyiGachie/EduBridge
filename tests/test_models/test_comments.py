@@ -1,3 +1,4 @@
+import pytest
 from app import app
 from database import db
 from application.models.comments import Comment
