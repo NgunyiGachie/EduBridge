@@ -331,32 +331,32 @@ with app.app_context():
     # Seed Grades
     grades = [
         Grade(
-            student_id='1', 
-            course_id='2', 
+            student_id=1, 
+            course_id=2, 
             grade=20, 
             date_posted=datetime(2024, 9, 1, 10, 0, 0)
             ),
         Grade(
-            student_id='2', 
-            course_id='1', 
+            student_id=2, 
+            course_id=1, 
             grade=90, 
             date_posted=datetime(2024, 9, 1, 10, 0, 0)
             ),
         Grade(
-            student_id='3', 
-            course_id='3', 
+            student_id=3, 
+            course_id=3, 
             grade=40, 
             date_posted=datetime(2024, 9, 1, 10, 0, 0)
             ),
         Grade(
-            student_id='4', 
-            course_id='2', 
+            student_id=4, 
+            course_id=2, 
             grade=30, 
             date_posted=datetime(2024, 9, 1, 10, 0, 0)
             ),
         Grade(
-            student_id='1', 
-            course_id='1', 
+            student_id=1, 
+            course_id=1, 
             grade=34, 
             date_posted=datetime(2024, 9, 1, 10, 0, 0)
             ),
