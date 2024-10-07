@@ -1,10 +1,8 @@
 import os
-
 from flask import Flask
 from flask_migrate import Migrate
 from database import db
 from config import config
-
 from application.models.assignment import Assignment
 from application.models.attendance import Attendance
 from application.models.comments import Comment
@@ -26,7 +24,6 @@ app.config.from_object(config[config_name])
 
 db.init_app(app)
 migrate = Migrate(app, db)
-
 
 if __name__== '__main__':
     try:
