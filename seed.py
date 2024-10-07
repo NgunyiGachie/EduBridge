@@ -435,38 +435,38 @@ with app.app_context():
 
     submissions = [
         Submission(
-            assignment_id='3', 
-            student_id='2', 
+            assignment_id=3, 
+            student_id=2, 
             submission_info='Assignment 3 submission - Chemistry lab report.pdf', 
-            grade_id='1', 
+            grade_id=1, 
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
         Submission(
-            assignment_id='2', 
-            student_id='1', 
+            assignment_id=2, 
+            student_id=1, 
             submission_info='Assignment 2 submission - Philosophy essay.docx', 
-            grade_id='2', 
+            grade_id=2, 
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
         Submission(
-            assignment_id='1', 
-            student_id='3', 
+            assignment_id=1, 
+            student_id=3, 
             submission_info='Assignment 1 submission - Mathematics homework.pdf', 
-            grade_id='3', 
+            grade_id=3, 
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
         Submission(
-            assignment_id='3', 
-            student_id='4', 
+            assignment_id=3, 
+            student_id=4, 
             submission_info='Assignment 3 submission - Chemistry presentation.pptx', 
-            grade_id='1', 
+            grade_id=1, 
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
         Submission(
-            assignment_id='1', 
-            student_id='2', 
+            assignment_id=1, 
+            student_id=2, 
             submission_info='Assignment 1 submission - Mathematics quiz.pdf', 
-            grade_id='2', 
+            grade_id=2, 
             date=datetime(2024, 9, 1, 9, 0, 0)
             ),
     ]
