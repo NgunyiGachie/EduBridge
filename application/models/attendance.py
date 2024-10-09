@@ -1,18 +1,36 @@
 from database import db
-from application.utils.validation_mixin import ValidationMixin
+from sqlalchemy.orm import validates
+import datetime
 
-class Attendance(db.Model, ValidationMixin):
+class Attendance(db.Model):
     __tablename__  = 'attendances'
     id = db.Column(db.Integer, primary_key=True)
     student_id = db.Column(db.Integer, db.ForeignKey("students.id"), nullable=False)
     lecture_id = db.Column(db.Integer, db.ForeignKey("lectures.id"), nullable=False)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False) 
     attendance_status = db.Column(db.String, nullable=False)
-    dates = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    dates = db.Column(db.DateTime, nullable=False)
 
     student = db.relationship('Student', back_populates='attendance')
     lecture = db.relationship('Lecture', back_populates='attendance')
     instructor = db.relationship('Instructor', back_populates='attendance') 
+
+    @validates('dates')
+    def validate_dates(self, key, value):
+        if not isinstance(value, datetime.datetime):
+            raise AttributeError(f"{key} must be a valid datetime")
+        return value
+    
+    @validates('attendance_status')
+    def validates_attendance_status(self, key, attendance_status):
+        if not isinstance(attendance_status, str):
+            raise ValueError("Attendance status must be a string")
+        attendance_status = attendance_status.strip().lower()
+        if attendance_status is None:
+            raise ValueError("Attendance status cannot be None")
+        if attendance_status not in ['present', 'absent']:
+            raise ValueError('Attendance status must be either present or absent')
+        return attendance_status
     
     def to_dict(self):
         return {

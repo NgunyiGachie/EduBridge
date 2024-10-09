@@ -5,65 +5,121 @@ from datetime import datetime, timedelta
 from sqlalchemy.exc import IntegrityError
 from database import db
 
-@pytest.fixture
-def setup_teardown(app):
-    with app.app_context():
-        db.create_all()
-        yield
-        db.session.rollback()
-        db.drop_all()
+class TestAssignment:
+    """Test suite for the assignment model"""
+    @pytest.fixture
+    def setup_teardown(app):
+        with app.app_context():
+            db.create_all()
+            yield
+            db.session.rollback()
+            db.drop_all()
 
-def test_assignment_creation_valid_data(setup_teardown):
-    valid_due_date = datetime.now() + timedelta(days=1)
-    assignment = Assignment(
-        title="Assignment1",
-        description="This is a valid assignment",
-        course_id=1,
-        due_date=valid_due_date,
-        total_points=100
-    )
-    db.session.add(assignment)
-    db.session.commit()
+    def test_has_attributes(self):
+        """Has attributes title, description, course_id, due_date, total_points"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
 
-    assert assignment.id is not None
-    assert assignment.title == "Assignment 1"
-    assert assignment.description == "This is a valid assignment"
-    assert assignment.due_date == valid_due_date
-    assert assignment.total_points == 100
+            assignment = Assignment(
+                title='Introduction to Philosophy',
+                description='Explain the allegory of the cave', 
+                course_id=1, 
+                due_date=datetime(2024, 11, 16),
+                total_points=70,
+            )
+            db.session.add(assignment)
+            db.session.commit()
 
-def test_invalid_title(setup_teardown):
-    past_due_date = datetime.now() + timedelta(days=1)
-    with pytest.raises(ValueError, match="Due date must be in the future"):
-        Assignment(
-            title="Assignment1",
-            description="This is a valid assignment",
-            course_id=1,
-            due_date=past_due_date,
-            total_points=100
-        )
+            created_assignment = Assignment.query.filter(Assignment.title == "Introduction to Philosophy").first()
+            assert created_assignment is not None
+            assert created_assignment.title == "Introduction to Philosophy"
+            assert created_assignment.description == "Explain the allegory of the cave"
+            assert created_assignment.course_id == 1
+            assert created_assignment.due_date == datetime(2024, 11, 16)
+            assert created_assignment.total_points == 70
+            assert created_assignment.id is not None
 
-def test_invalid_total_points(setup_teardown):
-    future_due_date = datetime.now() + timedelta(days=1)
-    with pytest.raises(ValueError, match="Total points must be greater than or equal to zero"):
-        Assignment(
-            title="Assignment1",
-            description="This is a valid assignment",
-            course_id=1,
-            due_date=future_due_date,
-            total_points=100
-        )
+    def test_requires_title(self):
+        """Requires each record to have a title"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
 
-def test_assignment_with_none_total_points(setup_teardown):
-    future_due_date = datetime.now() + timedelta(days=1)
-    with pytest.raises(ValueError, match="Total points cannot be None"):
-        Assignment(
-            title="Assignment1",
-            description="This is a valid assignment",
-            course_id=1,
-            due_date=future_due_date,
-            total_points=100
-        )
-        
-        
+            assignment = Assignment(
+                description='Explain the allegory of the cave', 
+                course_id=1, 
+                due_date=datetime(2024, 11, 16),
+                total_points=70,
+            )
+            with pytest.raises(IntegrityError):
+                db.session.add(assignment)
+                db.session.commit()
+    
+    def test_requires_description(self):
+        """Requires each record to have a description"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
+
+            assignment = Assignment(
+                title='Introduction to Philosophy',
+                course_id=1, 
+                due_date=datetime(2024, 11, 16),
+                total_points=70,
+            )
+            with pytest.raises(IntegrityError):
+                db.session.add(assignment)
+                db.session.commit()
+
+    def test_requires_course_id(self):
+        """Requires each record to have a course_id"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
+
+            assignment = Assignment(
+                title='Introduction to Philosophy',
+                description='Explain the allegory of the cave', 
+                due_date=datetime(2024, 11, 16),
+                total_points=70,
+            )
+            with pytest.raises(IntegrityError):
+                db.session.add(assignment)
+                db.session.commit()
+
+    def test_requires_due_date(self):
+        """Requires each record to have a due_date"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
+
+            assignment = Assignment(
+                title='Introduction to Philosophy',
+                description='Explain the allegory of the cave', 
+                course_id=1, 
+                total_points=70,
+            )
+            with pytest.raises(IntegrityError):
+                db.session.add(assignment)
+                db.session.commit()
+
+    def test_requires_total_points(self):
+        """Requires each record to have total_points"""
+        with app.app_context():
+            Assignment.query.delete()
+            db.session.commit()
+
+            assignment = Assignment(
+                title='Introduction to Philosophy',
+                description='Explain the allegory of the cave', 
+                course_id=1, 
+                due_date=datetime(2024, 11, 16),
+            )
+            with pytest.raises(IntegrityError):
+                db.session.add(assignment)
+                db.session.commit()
+
+
     
 
