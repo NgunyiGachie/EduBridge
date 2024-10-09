@@ -1,8 +1,8 @@
 from database import db
 from sqlalchemy.types import JSON
-from application.utils.validation_mixin import ValidationMixin
+from sqlalchemy.orm import validates
 
-class Course(db.Model, ValidationMixin):
+class Course(db.Model):
     __tablename__  = 'courses'
     id = db.Column(db.Integer, primary_key=True)
     course_info = db.Column(db.String, nullable=False)
@@ -13,6 +13,27 @@ class Course(db.Model, ValidationMixin):
     discussion = db.relationship('Discussion', back_populates='course', cascade='all, delete-orphan')
     enrollment = db.relationship('Enrollment', back_populates='course', cascade='all, delete-orphan')
     grade = db.relationship('Grade', back_populates='course', cascade='all, delete-orphan')
+
+    @validates('course_info')
+    def validate_course_info(self, key, value):
+        if value is None:
+            raise AssertionError("Course info cannot be None")
+        if len(value) <= 0:
+            raise AssertionError("Course info must be at least one character")
+        if not value or not (value, str):
+            raise ValueError("Course info must be of type string")
+        return value
+        
+    @validates('schedule')
+    def validate_schedule(self, key, schedule):
+        if not isinstance(schedule, list):
+            raise ValueError("Schedule must be a list of entries")
+        for entry in schedule:
+            if not isinstance(entry, dict):
+                raise ValueError("Each entry must be of type dictionary")
+            if 'day' not in entry or 'start' not in entry or 'end' not in entry:
+                raise ValueError("Each entry must contain the day, start time, and end time")
+        return schedule
 
     def to_dict(self):
         return {

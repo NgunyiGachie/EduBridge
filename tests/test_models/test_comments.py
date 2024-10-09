@@ -41,7 +41,6 @@ class TestComments:
             assert new_comment.posted_at == datetime(2024, 7, 16)
             assert new_comment.edited_at == datetime(2024, 7, 16)
             assert new_comment.id is not None
-
             db.session.delete(new_comment)
             db.session.commit()
 
