@@ -5,7 +5,7 @@ import re
 class ValidationMixin:
 
     @validates('title', 'description', 'course_info', 'content', 'file_info', 'related_to', 'department', 'lecture_info', 
-               'message_body', 'submission_info', 'date', 'name')
+               'message_body', 'submission_info', 'name')  
     def validate_strings(self, key, value):
         if value is None:
             raise ValueError(f"{key} cannot be None")
@@ -13,14 +13,25 @@ class ValidationMixin:
             raise ValueError(f"{key} must be a string")
         if not value.strip():
             raise ValueError(f"{key} must be a non-empty string")
+
+        # Additional validation for 'name' field
+        if key == 'name':
+            if len(value) < 5 or len(value) > 20:
+                raise ValueError('Username must be between 5 and 20 characters')
+
         return value
 
-    @validates('due_date', 'posted_at', 'edited_at', 'created_at', 'updated_at', 'upload_date', 'date_posted', 'sent_date', 'read_date', 'dates')
+    @validates('due_date', 'posted_at', 'edited_at', 'created_at', 'date', 'updated_at', 'upload_date', 'date_posted', 'sent_date', 'read_date', 'dates')
     def validate_dates(self, key, value):
+        if value is None:
+            return None  
+        
         if not isinstance(value, datetime):
             raise AttributeError(f"{key} must be a valid datetime")
+        
         if value > datetime.now():
             raise ValueError(f"{key} cannot be in the future")
+        
         return value
 
     @validates('total_points')
@@ -72,14 +83,6 @@ class ValidationMixin:
         if grade < 1 or grade > 100:
             raise ValueError("Grades must be between 1 and 100")
         return grade
-    
-    @validates('name')
-    def validate_username(self, key, name):
-        if not name:
-            raise AssertionError("No username provided")
-        if len(name) < 5 or len(name) > 20:
-            raise AssertionError('Username must be between 5 and 20 characters')
-        return name
     
     @validates('profile_picture')
     def validate_profile_picture(self, key, profile_picture):

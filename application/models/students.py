@@ -70,6 +70,7 @@ class Student(db.Model, ValidationMixin):
         }
     
     def __repr__(self):
+        """Return string representation of the model instance."""
         return f"<Student {self.username}, ID: {self.id}>"
         
 

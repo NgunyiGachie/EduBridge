@@ -23,5 +23,6 @@ class Course(db.Model, ValidationMixin):
         }
     
     def __repr__(self):
+        """Return string representation of the model instance."""
         return f"<Course {self.course_info}, ID: {self.id}>"
         

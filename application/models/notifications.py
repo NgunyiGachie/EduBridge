@@ -28,5 +28,6 @@ class Notification(db.Model, ValidationMixin):
         }
     
     def __repr__(self):
+        """Return string representation of the model instance."""
         return f"<Notification {self.id}>"
     

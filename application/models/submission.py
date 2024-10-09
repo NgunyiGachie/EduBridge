@@ -8,7 +8,8 @@ class Submission(db.Model, ValidationMixin):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     submission_info = db.Column(db.String, nullable=False)
     grade_id = db.Column(db.Integer, db.ForeignKey('grades.id'), nullable=False)
-    date = db.Column(db.DateTime, server_default = db.func.now(), nullable=False)
+    date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+
 
     assignment = db.relationship('Assignment', back_populates='submission')
     student = db.relationship('Student', back_populates='submission')
@@ -25,4 +26,5 @@ class Submission(db.Model, ValidationMixin):
         }
     
     def __repr__(self):
+        """Return string representation of the model instance."""
         return f"<Submission {self.id}>"

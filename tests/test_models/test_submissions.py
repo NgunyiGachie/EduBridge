@@ -102,7 +102,7 @@ class TestSubmission:
                 db.session.commit()
 
     def test_requires_date(self):
-        """Requires each record to have date"""
+        """Requires each record to have a date"""
 
         with app.app_context():
             Submission.query.delete()
@@ -117,6 +117,16 @@ class TestSubmission:
             with pytest.raises(IntegrityError):
                 db.session.add(submission)
                 db.session.commit()
+
+            submission_with_date = Submission(
+                student_id=2, 
+                assignment_id=3, 
+                submission_info='Assignment 3 submission - Chemistry lab report.pdf', 
+                grade_id=1,
+                date=datetime.now() 
+            )
+            db.session.add(submission_with_date)
+            db.session.commit()  
 
     def test_integer_values(self):
         """Requires assignment_id, student_id, grade_id to be integers"""
@@ -189,7 +199,7 @@ class TestSubmission:
                 student_id=2, 
                 submission_info='Assignment 3 submission - Chemistry lab report.pdf', 
                 grade_id=1, 
-                date=datetime(2040, 9, 1, 9, 0, 0)
+                date=datetime(2024, 9, 1, 9, 0, 0)
             )
             with pytest.raises(ValueError, match="date cannot be in the future"):
                 db.session.add(submission)
