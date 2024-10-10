@@ -8,15 +8,13 @@ from datetime import datetime
 class TestDiscussion:
     """Test case for Discussion model"""
 
-    class TestAssignment:
-        """Test suite for the assignment model"""
-        @pytest.fixture
-        def setup_teardown(app):
-            with app.app_context():
-                db.create_all()
-                yield
-                db.session.rollback()
-                db.drop_all()
+    @pytest.fixture
+    def setup_teardown(app):
+        with app.app_context():
+            db.create_all()
+            yield
+            db.session.rollback()
+            db.drop_all()
 
     def test_has_attributes(self):
         """Test discussion model has attributes: title, description, course_id, created_at, updated_at"""
