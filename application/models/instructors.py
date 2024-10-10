@@ -2,11 +2,10 @@ from database import db
 from argon2 import PasswordHasher
 from argon2.exceptions import VerificationError
 from sqlalchemy.orm import validates
-from application.utils.validation_mixin import ValidationMixin
 
 ph = PasswordHasher()
 
-class Instructor(db.Model, ValidationMixin):
+class Instructor(db.Model):
     __tablename__  = 'instructors'
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String, nullable=False)
@@ -14,7 +13,7 @@ class Instructor(db.Model, ValidationMixin):
     _password_hash = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String)
     department = db.Column(db.String, nullable=False)
-    bio = db.Column(db.String)
+    bio = db.Column(db.String, nullable=False)
 
     course = db.relationship('Course', back_populates='instructor', cascade="all, delete-orphan")
     lecture = db.relationship('Lecture', back_populates='instructor', cascade="all, delete-orphan")
@@ -36,6 +35,15 @@ class Instructor(db.Model, ValidationMixin):
             return True
         except VerificationError:
             return False
+
+    @validates('name', 'profile_picture', 'bio', 'department') 
+    def validate_strings(self, key, value):
+        if value is None:
+            raise ValueError(f"{key} cannot be None")
+        if not isinstance(value, str):
+            raise ValueError(f"{key} must be a string")
+        if not value.strip():
+            raise ValueError(f"{key} must be a non-empty string")
         
     @validates('email')
     def validate_email(self, key, email):

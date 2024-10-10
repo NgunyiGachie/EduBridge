@@ -1,7 +1,8 @@
 from database import db
-from application.utils.validation_mixin import ValidationMixin
+from sqlalchemy.orm import validates
+from datetime import datetime
 
-class Notification(db.Model, ValidationMixin):
+class Notification(db.Model):
     __tablename__  = 'notifications'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable=False)
@@ -9,11 +10,38 @@ class Notification(db.Model, ValidationMixin):
     student_id = db.Column(db.Integer, db.ForeignKey('students.id'), nullable=False)
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
     read_status = db.Column(db.String, nullable=False)
-    sent_date = db.Column(db.DateTime, server_default= db.func.now(), nullable=False)
-    read_date = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    sent_date = db.Column(db.DateTime, nullable=False)
+    read_date = db.Column(db.DateTime, nullable=False)
 
     student = db.relationship('Student', back_populates='notification')
     instructor = db.relationship('Instructor', back_populates='notification')
+
+    @validates('title', 'message_body')
+    def validate_strings(self, key, value):
+        if value is None:
+            raise ValueError(f"{key} cannot be None")
+        if not isinstance(value, str):
+            raise ValueError(f"{key} must be a string")
+        if not value.strip():
+            raise ValueError(f"{key} must be a non-empty string")
+        
+    @validates('read_status')
+    def validate_read_status(self, key, value):
+        if value is None:
+            raise AssertionError("Read status cannot be None")
+        if not isinstance(value, str):
+            raise AssertionError("Read status must be of type string")
+        if value not in ["read", 'unread']:
+            raise AssertionError("Read status must be either 'read' or 'unread'")
+        return value
+
+    @validates('sent_date', 'read_date')    
+    def validate_dates(self, key, value):  
+        if not isinstance(value, datetime):
+            raise AttributeError(f"{key} must be a valid datetime")
+        if value > datetime.now():
+            raise ValueError(f"{key} cannot be in the future")
+        return value
     
     def to_dict(self):
         return {
