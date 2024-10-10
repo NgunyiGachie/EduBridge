@@ -3,8 +3,6 @@ from sqlalchemy.exc import IntegrityError
 from app import app
 from database import db
 from application.models.notifications import Notification
-from application.models.students import Student
-from application.models.instructors import Instructor
 from datetime import datetime
 
 class TestNotification:
