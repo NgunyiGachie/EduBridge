@@ -51,7 +51,7 @@ class AssignmentResource(Resource):
             name: due_date
             type: string
             format: date-time
-            required: false
+            required: true
             description: Due date for the assignment
             -in: formData
             name: total_points
