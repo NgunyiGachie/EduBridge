@@ -87,7 +87,7 @@ class AssignmentResource(Resource):
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except Exception as e:
             print(f"Error creating assignment: {e}")
-            return make_response(jsonify({"error": "Unable tp create assignment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create assignment", "details": str(e)}), 500)
 
 class AssignmentByID(Resource):
 
