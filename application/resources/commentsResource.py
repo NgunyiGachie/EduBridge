@@ -79,10 +79,10 @@ class CommentResource(Resource):
             edited_date = datetime.fromisoformat(edited_date_str) if edited_date_str else datetime.now()
 
             new_comment = Comment(
-                discussion_id = request.form.get['discussion_id'],
-                student_id = request.form.get['student_id'],
-                instructor_id = request.form.get['instructor_id'],
-                content = request.form.get['content'],
+                discussion_id = request.form['discussion_id'],
+                student_id = request.form['student_id'],
+                instructor_id = request.form['instructor_id'],
+                content = request.form['content'],
                 posted_at = posted_date,
                 edited_date = edited_date,
             )
