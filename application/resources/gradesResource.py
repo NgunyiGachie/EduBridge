@@ -72,7 +72,7 @@ class GradesResource(Resource):
             print(f"Missing: {ke}")
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except Exception as e:
-            print(f"Error creating assignment: {e}")
+            print(f"Error creating grade: {e}")
             return make_response(jsonify({"error": "Unable to create grade", "details": str(e)}), 500)
 
 class GradeByID(Resource):
