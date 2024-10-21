@@ -2,21 +2,9 @@ import os
 from flask import Flask
 from flasgger import Swagger
 from flask_migrate import Migrate
+from flask_restful import Api
 from database import db
 from config import config
-from application.models.assignment import Assignment
-from application.models.attendance import Attendance
-from application.models.comments import Comment
-from application.models.course import Course
-from application.models.discussion import Discussion
-from application.models.enrollments import Enrollment
-from application.models.files import File
-from application.models.grades import Grade
-from application.models.instructors import Instructor
-from application.models.lectures import Lecture
-from application.models.notifications import Notification
-from application.models.students import Student
-from application.models.submission import Submission
 
 app = Flask(__name__)
 swagger = Swagger(app)
@@ -26,6 +14,48 @@ app.config.from_object(config[config_name])
 
 db.init_app(app)
 migrate = Migrate(app, db)
+api=Api(app)
+
+from application.resources.assignmentResource import AssignmentResource, AssignmentByID
+from application.resources.attendanceResource import AttendanceResource, AttendanceByID
+from application.resources.commentsResource import CommentResource, CommentByID
+from application.resources.courseResource import CourseResource, CourseByID
+from application.resources.discussionResource import DiscussionResource, DiscussionByID
+from application.resources.enrollmentsResource import EnrollmentsResource, EnrollmentByID
+from application.resources.filesResource import FilesResource, FileByID
+from application.resources.gradesResource import GradesResource, GradeByID
+from application.resources.instructorsResource import InstructorResource, InstructorByID
+from application.resources.lecturesResource import LecturesResource, LectureByID
+from application.resources.notificationsResource import NotificationsResource, NotificationByID
+from application.resources.studentsResource import StudentResource, StudentByID
+from application.resources.submissionResource import SubmissionResource, SubmissionByID
+
+api.add_resource(AssignmentResource, "/assignments", endpoint="assignments")
+api.add_resource(AssignmentByID, "/assignments/<int:id>", endpoint="assignments_by_id")
+api.add_resource(AttendanceResource, "/attendances", endpoint="attendances")
+api.add_resource(AttendanceByID, "/attendances/<int:id>", endpoint="attendances_by_id")
+api.add_resource(CommentResource, "/comments", endpoint="comments")
+api.add_resource(CommentByID, "/comments/<int:id>", endpoint="comments_by_id")
+api.add_resource(CourseResource, "/courses", endpoint="courses")
+api.add_resource(CourseByID, "/courses/<int: id>", endpoint="courses_by_id")
+api.add_resource(DiscussionResource, "/discussions", endpoint="discussions")
+api.add_resource(DiscussionByID, "/discussions/<int:id>", endpoint="discussions_by_id")
+api.add_resource(EnrollmentsResource, "/enrollments", endpoint="enrollments")
+api.add_resource(EnrollmentByID, "/enrollments/<int:id>", endpoint="enrollments_by_id")
+api.add_resource(FilesResource, "/files", endpoint="files")
+api.add_resource(FileByID, "/files/<int:id>", endpoint="files_by_id")
+api.add_resource(GradesResource, "/grades", endpoint="grades")
+api.add_resource(GradeByID, "/grades/<int:id>", endpoint="grades_by_id")
+api.add_resource(InstructorResource, "/instructors", endpoint="instructors")
+api.add_resource(InstructorByID, "/instructors/<int:id>", endpoint="instructors_by_id")
+api.add_resource(LecturesResource, "/lectures", endpoint="lectures")
+api.add_resource(LectureByID, "/lectures/<int:id>", endpoint="lectures_by_id")
+api.add_resource(NotificationsResource, "/notifications", endpoint="notifications")
+api.add_resource(NotificationByID, "/notifications/<int:id>", endpoint="notifications_by_id")
+api.add_resource(StudentResource, "/students", endpoint="students")
+api.add_resource(StudentByID, "/students/<int:id>", endpoint="students_by_id")
+api.add_resource(SubmissionResource, "/submissions", endpoint="submissions")
+api.add_resource(SubmissionByID, "/submissions/<int:id>", endpoint="submissions_by_id")
 
 if __name__== '__main__':
     try:

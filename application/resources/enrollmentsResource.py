@@ -71,7 +71,7 @@ class EnrollmentsResource(Resource):
             print(f"Error creating enrollment: {e}")
             return make_response(jsonify({"error": "Unable to create enrollment", "details": str(e)}), 500)
 
-class EnrollmnetByID(Resource):
+class EnrollmentByID(Resource):
 
     def get(self, id):
         """
