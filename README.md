@@ -38,20 +38,20 @@ EduBridge is an online classroom management system designed to facilitate effect
     source venv/bin/activate 
 
 3. **Install dependencies:**
-    ```pip install -r requirements.txt```
+    ```pip install -r requirements.txt
 
 4. **Set up the database:**
-    Modify the ```config.py`` file to configure your database connection.
+    Modify the ```config.py file to configure your database connection.
     Initialize the database:
         ```bash
         python
         from app import db
         db.create_all()
 5. **Seed the database:**
-    ```python seed.py```
+    ```python seed.py
 
 ### Running the Application
-```python app.py```
+```python app.py`
 Open your browser and navigate to http://127.0.0.1:5555/ to access the application.
 
 ### Contributing
