@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: f3d7772e3e8b
+Revision ID: e2569e01a265
 Revises: 
-Create Date: 2024-10-10 00:21:19.055160
+Create Date: 2024-10-18 12:07:14.717447
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = 'f3d7772e3e8b'
+revision = 'e2569e01a265'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -22,7 +22,7 @@ def upgrade():
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('file_info', sa.String(), nullable=False),
     sa.Column('related_to', sa.String(), nullable=False),
-    sa.Column('upload_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('upload_date', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('instructors',
@@ -32,7 +32,7 @@ def upgrade():
     sa.Column('_password_hash', sa.String(), nullable=False),
     sa.Column('profile_picture', sa.String(), nullable=True),
     sa.Column('department', sa.String(), nullable=False),
-    sa.Column('bio', sa.String(), nullable=True),
+    sa.Column('bio', sa.String(), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
     )
@@ -61,8 +61,8 @@ def upgrade():
     sa.Column('lecture_info', sa.String(), nullable=False),
     sa.Column('instructor_id', sa.Integer(), nullable=False),
     sa.Column('schedule', sa.JSON(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['instructor_id'], ['instructors.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -73,8 +73,8 @@ def upgrade():
     sa.Column('student_id', sa.Integer(), nullable=False),
     sa.Column('instructor_id', sa.Integer(), nullable=False),
     sa.Column('read_status', sa.String(), nullable=False),
-    sa.Column('sent_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('read_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('sent_date', sa.DateTime(), nullable=False),
+    sa.Column('read_date', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['instructor_id'], ['instructors.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -84,7 +84,7 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=False),
     sa.Column('course_id', sa.Integer(), nullable=False),
-    sa.Column('due_date', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('due_date', sa.DateTime(), nullable=False),
     sa.Column('total_points', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['course_id'], ['courses.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -95,7 +95,7 @@ def upgrade():
     sa.Column('lecture_id', sa.Integer(), nullable=False),
     sa.Column('instructor_id', sa.Integer(), nullable=False),
     sa.Column('attendance_status', sa.String(), nullable=False),
-    sa.Column('dates', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('dates', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['instructor_id'], ['instructors.id'], ),
     sa.ForeignKeyConstraint(['lecture_id'], ['lectures.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),
@@ -106,8 +106,8 @@ def upgrade():
     sa.Column('title', sa.String(), nullable=False),
     sa.Column('description', sa.String(), nullable=False),
     sa.Column('course_id', sa.Integer(), nullable=False),
-    sa.Column('created_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['course_id'], ['courses.id'], ),
     sa.PrimaryKeyConstraint('id')
     )
@@ -125,7 +125,7 @@ def upgrade():
     sa.Column('student_id', sa.Integer(), nullable=False),
     sa.Column('course_id', sa.Integer(), nullable=False),
     sa.Column('grade', sa.Integer(), nullable=False),
-    sa.Column('date_posted', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('date_posted', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['course_id'], ['courses.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),
     sa.PrimaryKeyConstraint('id')
@@ -135,9 +135,9 @@ def upgrade():
     sa.Column('discussion_id', sa.Integer(), nullable=False),
     sa.Column('student_id', sa.Integer(), nullable=False),
     sa.Column('instructor_id', sa.Integer(), nullable=False),
-    sa.Column('content', sa.String(), nullable=True),
-    sa.Column('posted_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('edited_at', sa.DateTime(), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('content', sa.String(), nullable=False),
+    sa.Column('posted_at', sa.DateTime(), nullable=False),
+    sa.Column('edited_at', sa.DateTime(), nullable=False),
     sa.ForeignKeyConstraint(['discussion_id'], ['discussions.id'], ),
     sa.ForeignKeyConstraint(['instructor_id'], ['instructors.id'], ),
     sa.ForeignKeyConstraint(['student_id'], ['students.id'], ),

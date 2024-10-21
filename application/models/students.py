@@ -13,7 +13,7 @@ class Student(db.Model):
     last_name = db.Column(db.String(80), nullable=False)
     email= db.Column(db.String, nullable=False, unique=True)
     _password_hash = db.Column(db.String, nullable=False)
-    profile_picture = db.Column(db.String)
+    profile_picture = db.Column(db.String, nullable=False)
 
     submission = db.relationship('Submission', back_populates='student', cascade="all, delete-orphan")
     enrollment = db.relationship('Enrollment', back_populates='student', cascade="all, delete-orphan")
@@ -45,6 +45,7 @@ class Student(db.Model):
             raise ValueError(f"{key} must be a string")
         if not value.strip():
             raise ValueError(f"{key} must be a non-empty string")
+        return value
         
     @validates("username")
     def validate_username(self, key, username):

@@ -24,6 +24,7 @@ class Notification(db.Model):
             raise ValueError(f"{key} must be a string")
         if not value.strip():
             raise ValueError(f"{key} must be a non-empty string")
+        return value
         
     @validates('read_status')
     def validate_read_status(self, key, value):

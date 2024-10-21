@@ -44,6 +44,7 @@ class Instructor(db.Model):
             raise ValueError(f"{key} must be a string")
         if not value.strip():
             raise ValueError(f"{key} must be a non-empty string")
+        return value
         
     @validates('email')
     def validate_email(self, key, email):

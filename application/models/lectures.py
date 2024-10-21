@@ -21,6 +21,7 @@ class Lecture(db.Model):
             raise ValueError(f"{key} must be a string")
         if not value.strip():
             raise ValueError(f"{key} must be a non-empty string")
+        return value
 
     @validates('schedule')
     def validate_schedule(self, key, schedule):
