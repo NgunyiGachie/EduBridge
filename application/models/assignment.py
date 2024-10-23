@@ -20,7 +20,8 @@ class Assignment(db.Model):
     total_points = db.Column(db.Integer, nullable=False)
 
     course = db.relationship('Course', single_parent=True)
-    submission = db.relationship('Submission', back_populates='assignment', cascade="all, delete-orphan")
+    submission = db.relationship('Submission', back_populates='assignment',
+                                cascade="all, delete-orphan")
 
     @validates('title', 'description')
     def validate_strings(self, key: str, value: str) -> str:
@@ -39,7 +40,7 @@ class Assignment(db.Model):
         return value
 
     @validates('total_points')
-    def validate_total_points(self, key: str, total_points: int) -> int:
+    def validate_total_points(self, total_points: int) -> int:
         """Validate that total_points is a non-negative integer."""
         if total_points is None:
             raise ValueError("Total points cannot be None")
