@@ -1,7 +1,7 @@
 from database import db
 from application.models.grades import Grade
 from flask import jsonify, request, make_response
-from flask_resftful import Resource
+from flask_restful import Resource
 from datetime import datetime
 
 class GradesResource(Resource):
