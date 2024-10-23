@@ -7,6 +7,7 @@ import os
 from flask import Flask
 from flask_migrate import Migrate
 from flask_restful import Api
+from flasgger import Swagger
 from database import db
 from config import config
 from application.resources.assignmentResource import AssignmentResource, AssignmentByID
