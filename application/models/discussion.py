@@ -8,7 +8,10 @@ from sqlalchemy.orm import validates
 from database import db
 
 class Discussion(db.Model):
-    """Represents a discussion within a course, including title, description, and related comments."""
+    """
+    Represents a discussion within a course
+    It also includes title, description, and related comments.
+    """
 
     __tablename__ = 'discussions'
 
