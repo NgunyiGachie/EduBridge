@@ -1,4 +1,6 @@
-"""Resource for handling comments."""
+"""
+Module for handling comments endpoints.
+"""
 
 from datetime import datetime
 from flask import jsonify, request, make_response
@@ -95,7 +97,8 @@ class CommentResource(Resource):
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to create comment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create comment",
+                                        "details": str(e)}), 500)
 
 class CommentByID(Resource):
     """Resource for comment operations by ID."""
@@ -176,7 +179,8 @@ class CommentByID(Resource):
             return make_response(jsonify(response_dict), 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update comment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update comment",
+                                          "details": str(e)}), 500)
 
     def delete(self, comment_id):
         """Delete comment by ID.
@@ -204,4 +208,5 @@ class CommentByID(Resource):
             return make_response({"message": "Comment successfully deleted"}, 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete comment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete comment",
+                                          "details": str(e)}), 500)

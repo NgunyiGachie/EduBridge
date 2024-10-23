@@ -1,6 +1,8 @@
-"""Discussion resource for handling discussion-related endpoints."""
+"""
+Module for handling discussion endpoints.
+"""
 
-from datetime import datetime  # Standard library imports should come first
+from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 from database import db
@@ -89,10 +91,12 @@ class DiscussionResource(Resource):
             return make_response(jsonify(response_dict), 201)
         except KeyError as ke:
             print(f"Missing: {ke}")
-            return make_response(jsonify({"error": f"Missing required fields: {ke}"}), 400)
+            return make_response(jsonify({"error": f"Missing required fields: {ke}"}),
+                                400)
         except Exception as e:
             print(f"Error creating discussion: {e}")
-            return make_response(jsonify({"error": "Unable to create discussion", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create discussion",
+                                        "details": str(e)}), 500)
 
 
 class DiscussionByID(Resource):
@@ -141,18 +145,21 @@ class DiscussionByID(Resource):
         """
         discussion = Discussion.query.filter_by(id=discussion_id).first()
         if not discussion:
-            return make_response(jsonify({"error": "Discussion not found"}), 404)
+            return make_response(jsonify({"error": "Discussion not found"}),
+                                404)
 
         data = request.get_json()
         if not data:
-            return make_response(jsonify({"error": "Invalid data format"}), 400)
+            return make_response(jsonify({"error": "Invalid data format"}),
+                                400)
 
         for attr, value in data.items():
             if attr in ['created_at', 'updated_at'] and value:
                 try:
                     value = datetime.fromisoformat(value)
                 except ValueError:
-                    return make_response(jsonify({"error": "Invalid date format"}), 400)
+                    return make_response(jsonify({"error": "Invalid date format"}),
+                                        400)
             if hasattr(discussion, attr):
                 setattr(discussion, attr, value)
 
@@ -162,7 +169,8 @@ class DiscussionByID(Resource):
             return make_response(jsonify(response_dict), 200)
         except Exception as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update discussion", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update discussion",
+                                        "details": str(e)}), 500)
 
     def delete(self, discussion_id):
         """
@@ -182,12 +190,15 @@ class DiscussionByID(Resource):
         """
         discussion = Discussion.query.filter_by(id=discussion_id).first()
         if not discussion:
-            return make_response(jsonify({"error": "Discussion not found"}), 404)
+            return make_response(jsonify({"error": "Discussion not found"}),
+                                404)
 
         try:
             db.session.delete(discussion)
             db.session.commit()
-            return make_response({"message": "Discussion successfully deleted"}, 200)
+            return make_response({"message": "Discussion successfully deleted"},
+                                200)
         except Exception as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete discussion", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete discussion",
+                                        "details": str(e)}), 500)

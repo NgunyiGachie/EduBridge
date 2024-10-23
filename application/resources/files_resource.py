@@ -1,3 +1,7 @@
+"""
+Module for handling files endpoints.
+"""
+
 from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
@@ -79,11 +83,13 @@ class FilesResource(Resource):
             print(f"Missing: {ke}")
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except ValueError as ve:
-            return make_response(jsonify({"error": "Invalid date format", "details": str(ve)}), 400)
+            return make_response(jsonify({"error": "Invalid date format", "details": str(ve)}),
+                                400)
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"Error creating file: {e}")
-            return make_response(jsonify({"error": "Unable to create file", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create file", "details": str(e)}),
+                                500)
 
 
 class FileByID(Resource):
@@ -146,7 +152,8 @@ class FileByID(Resource):
                 try:
                     value = datetime.fromisoformat(value)
                 except ValueError:
-                    return make_response(jsonify({"error": "Invalid date format"}), 400)
+                    return make_response(jsonify({"error": "Invalid date format"}),
+                                        400)
             if hasattr(record, attr):
                 setattr(record, attr, value)
 
@@ -156,7 +163,8 @@ class FileByID(Resource):
             return make_response(jsonify(response_dict), 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update file", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update file",
+                                        "details": str(e)}), 500)
 
     def delete(self, file_id):
         """
@@ -185,4 +193,5 @@ class FileByID(Resource):
             return make_response(response_dict, 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete file", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete file",
+                                        "details": str(e)}), 500)

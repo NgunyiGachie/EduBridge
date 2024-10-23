@@ -1,4 +1,6 @@
-"""Resource for handling enrollments."""
+"""
+Module for handling enrollments endpoints.
+"""
 
 from flask import jsonify, request, make_response
 from flask_restful import Resource
@@ -71,11 +73,13 @@ class EnrollmentsResource(Resource):
             return response
         except KeyError as ke:
             print(f"Missing: {ke}")
-            return make_response(jsonify({"error": f"Missing required fields: {ke}"}), 400)
+            return make_response(jsonify({"error": f"Missing required fields: {ke}"}),
+                                400)
         except SQLAlchemyError as e:
             print(f"Error creating enrollment: {e}")
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to create enrollment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create enrollment",
+                                        "details": str(e)}), 500)
 
 
 class EnrollmentByID(Resource):
@@ -137,7 +141,8 @@ class EnrollmentByID(Resource):
             return make_response(jsonify(response_dict), 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update enrollment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update enrollment",
+                                        "details": str(e)}), 500)
 
     def delete(self, enrollment_id):
         """
@@ -157,12 +162,15 @@ class EnrollmentByID(Resource):
         """
         record = Enrollment.query.filter_by(id=enrollment_id).first()
         if not record:
-            return make_response(jsonify({"error": "Enrollment not found"}), 404)
+            return make_response(jsonify({"error": "Enrollment not found"}),
+                                404)
 
         try:
             db.session.delete(record)
             db.session.commit()
-            return make_response({"message": "Enrollment successfully deleted"}, 200)
+            return make_response({"message": "Enrollment successfully deleted"},
+                                200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete enrollment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete enrollment",
+                                        "details": str(e)}), 500)

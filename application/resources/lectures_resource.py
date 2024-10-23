@@ -1,5 +1,5 @@
 """
-Module for handling lecture-related resources in the API.
+Module for handling lecture endpoints.
 """
 
 from datetime import datetime
@@ -106,11 +106,13 @@ class LecturesResource(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"Database error: {e}")
-            return make_response(jsonify({"error": "Unable to create lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create lecture",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
             print(f"Error creating lecture: {e}")
-            return make_response(jsonify({"error": "Unable to create lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create lecture",
+                                        "details": str(e)}), 500)
 
 
 class LectureByID(Resource):
@@ -173,7 +175,8 @@ class LectureByID(Resource):
                 try:
                     value = datetime.fromisoformat(value)
                 except ValueError:
-                    return make_response(jsonify({"error": "Invalid date format"}), 400)
+                    return make_response(jsonify({"error": "Invalid date format"}),
+                                        400)
             if hasattr(record, attr):
                 setattr(record, attr, value)
 
@@ -183,10 +186,12 @@ class LectureByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"Database error: {e}")
-            return make_response(jsonify({"error": "Unable to update lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update lecture",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update lecture",
+                                        "details": str(e)}), 500)
 
     def delete(self, lecture_id):
         """
@@ -215,7 +220,9 @@ class LectureByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"Database error: {e}")
-            return make_response(jsonify({"error": "Unable to delete lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete lecture",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete lecture", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete lecture",
+                                        "details": str(e)}), 500)

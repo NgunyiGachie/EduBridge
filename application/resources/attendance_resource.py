@@ -1,3 +1,7 @@
+"""
+Module for handling attendance endpoints.
+"""
+
 from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
@@ -86,7 +90,8 @@ class AttendanceResource(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"Error creating attendance: {e}")
-            return make_response(jsonify({"error": "Unable to create attendance", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create attendance",
+                                        "details": str(e)}), 500)
 
 
 class AttendanceByID(Resource):
@@ -158,7 +163,8 @@ class AttendanceByID(Resource):
             return make_response(jsonify(attendance.to_dict()), 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update attendance", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update attendance",
+                                        "details": str(e)}), 500)
 
     def delete(self, attendance_id):
         """

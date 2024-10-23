@@ -1,3 +1,7 @@
+"""
+Module for handling submissions endpoints.
+"""
+
 from flask import jsonify, request, make_response
 from flask_restful import Resource
 from datetime import datetime
@@ -91,16 +95,18 @@ class SubmissionResource(Resource):
         except KeyError as ke:
             print(f"Missing: {ke}")
             return make_response(
-                jsonify({"error": f"Missing required field: {ke}"}), 400
+                jsonify({"error": f"Missing required field: {ke}"}),
+                400
             )
         except ValueError as ve:
             print(f"Error processing submission date: {ve}")
-            return make_response(jsonify({"error": "Invalid date format"}), 400)
+            return make_response(jsonify({"error": "Invalid date format"}),
+                                400)
         except SQLAlchemyError as e:
             print(f"Error creating submission: {e}")
             return make_response(
-                jsonify({"error": "Unable to create submission", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to create submission",
+                        "details": str(e)}), 500
             )
 
 
@@ -150,11 +156,13 @@ class SubmissionByID(Resource):
         """
         record = Submission.query.filter_by(id=submission_id).first()
         if not record:
-            return make_response(jsonify({"error": "Submission not found"}), 404)
+            return make_response(jsonify({"error": "Submission not found"}),
+                                404)
 
         data = request.get_json()
         if not data:
-            return make_response(jsonify({"error": "Invalid data format"}), 400)
+            return make_response(jsonify({"error": "Invalid data format"}),
+                                400)
 
         for attr, value in data.items():
             if attr == 'date' and value:
@@ -174,8 +182,8 @@ class SubmissionByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(
-                jsonify({"error": "Unable to update submission", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to update submission",
+                        "details": str(e)}), 500
             )
 
     def delete(self, submission_id):
@@ -196,7 +204,8 @@ class SubmissionByID(Resource):
         """
         record = Submission.query.filter_by(id=submission_id).first()
         if not record:
-            return make_response(jsonify({"error": "Submission not found"}), 404)
+            return make_response(jsonify({"error": "Submission not found"}),
+                                404)
 
         try:
             db.session.delete(record)
@@ -207,6 +216,6 @@ class SubmissionByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(
-                jsonify({"error": "Unable to delete submission", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to delete submission",
+                        "details": str(e)}), 500
             )

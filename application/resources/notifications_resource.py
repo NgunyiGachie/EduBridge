@@ -1,4 +1,4 @@
-"""Notifications resource module."""
+"""Module for handling notifications endpoints."""
 
 from datetime import datetime
 from flask import jsonify, request, make_response
@@ -116,14 +116,15 @@ class NotificationsResource(Resource):
             db.session.rollback()
             print(f"Error creating notification: {e}")
             return make_response(
-                jsonify({"error": "Unable to create notification", "details": str(e)}),
+                jsonify({"error": "Unable to create notification",
+                        "details": str(e)}),
                 500
             )
         except Exception as e:
             print(f"Unexpected error: {e}")
             return make_response(
-                jsonify({"error": "Internal server error", "details": str(e)}),
-                500
+                jsonify({"error": "Internal server error",
+                        "details": str(e)}), 500
             )
 
 
@@ -175,18 +176,21 @@ class NotificationByID(Resource):
         """
         record = Notification.query.filter_by(id=notification_id).first()
         if not record:
-            return make_response(jsonify({"error": "Notification not found"}), 404)
+            return make_response(jsonify({"error": "Notification not found"}),
+                                404)
 
         data = request.get_json()
         if not data:
-            return make_response(jsonify({"error": "Invalid data format"}), 400)
+            return make_response(jsonify({"error": "Invalid data format"}),
+                                400)
 
         for attr, value in data.items():
             if attr in ['sent_date', 'read_date'] and value:
                 try:
                     value = datetime.fromisoformat(value)
                 except ValueError:
-                    return make_response(jsonify({"error": "Invalid date format"}), 400)
+                    return make_response(jsonify({"error": "Invalid date format"}),
+                                        400)
             if hasattr(record, attr):
                 setattr(record, attr, value)
 
@@ -197,15 +201,15 @@ class NotificationByID(Resource):
             db.session.rollback()
             print(f"Error updating notification: {e}")
             return make_response(
-                jsonify({"error": "Unable to update notification", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to update notification",
+                        "details": str(e)}), 500
             )
         except Exception as e:
             db.session.rollback()
             print(f"Unexpected error: {e}")
             return make_response(
-                jsonify({"error": "Internal server error", "details": str(e)}),
-                500
+                jsonify({"error": "Internal server error",
+                        "details": str(e)}), 500
             )
 
     def delete(self, notification_id):
@@ -226,7 +230,8 @@ class NotificationByID(Resource):
         """
         record = Notification.query.filter_by(id=notification_id).first()
         if not record:
-            return make_response(jsonify({"error": "Notification not found"}), 404)
+            return make_response(jsonify({"error": "Notification not found"}),
+                                404)
 
         try:
             db.session.delete(record)
@@ -236,13 +241,13 @@ class NotificationByID(Resource):
             db.session.rollback()
             print(f"Error deleting notification: {e}")
             return make_response(
-                jsonify({"error": "Unable to delete notification", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to delete notification",
+                        "details": str(e)}), 500
             )
         except Exception as e:
             db.session.rollback()
             print(f"Unexpected error: {e}")
             return make_response(
-                jsonify({"error": "Internal server error", "details": str(e)}),
-                500
+                jsonify({"error": "Internal server error",
+                        "details": str(e)}), 500
             )

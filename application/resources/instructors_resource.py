@@ -1,7 +1,5 @@
 """
-instructors_resource.py
-
-This module defines the RESTful resource for managing instructors in the application.
+Module for handling instructors endpoints.
 """
 
 from flask import jsonify, request, make_response
@@ -97,15 +95,18 @@ class InstructorResource(Resource):
             return response
         except KeyError as ke:
             print(f"Missing: {ke}")
-            return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
+            return make_response(jsonify({"error": f"Missing required field: {ke}"}),
+                                400)
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"SQLAlchemy error creating instructor: {e}")
-            return make_response(jsonify({"error": "Unable to create instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create instructor",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
             print(f"Unexpected error creating instructor: {e}")
-            return make_response(jsonify({"error": "Unable to create instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create instructor",
+                                        "details": str(e)}), 500)
 
 
 class InstructorByID(Resource):
@@ -129,7 +130,8 @@ class InstructorByID(Resource):
         """
         instructor = Instructor.query.filter_by(id=instructor_id).first()
         if instructor is None:
-            return make_response(jsonify({"error": "Instructor not found"}), 404)
+            return make_response(jsonify({"error": "Instructor not found"}),
+                                404)
         return make_response(jsonify(instructor.to_dict()), 200)
 
     def patch(self, instructor_id):
@@ -168,11 +170,13 @@ class InstructorByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"SQLAlchemy error updating instructor: {e}")
-            return make_response(jsonify({"error": "Unable to update instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update instructor",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
             print(f"Unexpected error updating instructor: {e}")
-            return make_response(jsonify({"error": "Unable to update instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update instructor",
+                                        "details": str(e)}), 500)
 
     def delete(self, instructor_id):
         """
@@ -192,16 +196,20 @@ class InstructorByID(Resource):
         """
         record = Instructor.query.filter_by(id=instructor_id).first()
         if not record:
-            return make_response(jsonify({"error": "Instructor not found"}), 404)
+            return make_response(jsonify({"error": "Instructor not found"}),
+                                404)
         try:
             db.session.delete(record)
             db.session.commit()
-            return make_response({"message": "Instructor successfully deleted"}, 200)
+            return make_response({"message": "Instructor successfully deleted"},
+                                200)
         except SQLAlchemyError as e:
             db.session.rollback()
             print(f"SQLAlchemy error deleting instructor: {e}")
-            return make_response(jsonify({"error": "Unable to delete instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete instructor",
+                                        "details": str(e)}), 500)
         except Exception as e:
             db.session.rollback()
             print(f"Unexpected error deleting instructor: {e}")
-            return make_response(jsonify({"error": "Unable to delete instructor", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete instructor",
+                                        "details": str(e)}), 500)

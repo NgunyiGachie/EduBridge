@@ -1,5 +1,5 @@
 """
-students_resource.py - Flask Resource for managing students.
+Module for managing students endpoints.
 """
 
 from flask import jsonify, request, make_response
@@ -97,8 +97,8 @@ class StudentResource(Resource):
             db.session.rollback()
             print(f"Error creating student: {e}")
             return make_response(
-                jsonify({"error": "Unable to create student", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to create student",
+                        "details": str(e)}), 500
             )
 
 class StudentByID(Resource):
@@ -122,7 +122,8 @@ class StudentByID(Resource):
         """
         student = Student.query.filter_by(id=student_id).first()
         if student is None:
-            return make_response(jsonify({"error": "Student not found"}), 404)
+            return make_response(jsonify({"error": "Student not found"}),
+                                404)
         return make_response(jsonify(student.to_dict()), 200)
 
     def patch(self, student_id):
@@ -147,7 +148,8 @@ class StudentByID(Resource):
         """
         student = Student.query.filter_by(id=student_id).first()
         if not student:
-            return make_response(jsonify({"error": "Student not found"}), 404)
+            return make_response(jsonify({"error": "Student not found"}),
+                                404)
 
         data = request.get_json()
         if not data:
@@ -163,8 +165,8 @@ class StudentByID(Resource):
         except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(
-                jsonify({"error": "Unable to update student", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to update student",
+                "details": str(e)}), 500
             )
 
     def delete(self, student_id):
@@ -185,15 +187,17 @@ class StudentByID(Resource):
         """
         student = Student.query.filter_by(id=student_id).first()
         if not student:
-            return make_response(jsonify({"error": "Student not found"}), 404)
+            return make_response(jsonify({"error": "Student not found"}),
+                                404)
 
         try:
             db.session.delete(student)
             db.session.commit()
-            return make_response({"message": "Student successfully deleted"}, 200)
+            return make_response({"message": "Student successfully deleted"},
+                    200)
         except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(
-                jsonify({"error": "Unable to delete student", "details": str(e)}),
-                500
+                jsonify({"error": "Unable to delete student",
+                        "details": str(e)}), 500
             )

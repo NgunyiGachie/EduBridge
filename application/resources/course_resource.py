@@ -1,5 +1,5 @@
 """
-Module for managing course resources.
+Module for handling course endpoints.
 """
 
 from flask import jsonify, request, make_response

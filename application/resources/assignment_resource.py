@@ -1,5 +1,5 @@
 """
-This module contains the resources for handling assignment-related operations.
+Module for handling assignment endpoints.
 """
 
 from datetime import datetime
@@ -95,7 +95,8 @@ class AssignmentResource(Resource):
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
         except SQLAlchemyError as e:
             print(f"Error creating assignment: {e}")
-            return make_response(jsonify({"error": "Unable to create assignment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to create assignment", "details": str(e)}),
+                                500)
 
 
 class AssignmentByID(Resource):
@@ -167,7 +168,8 @@ class AssignmentByID(Resource):
             return make_response(jsonify(record.to_dict()), 200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to update assignment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to update assignment",
+                                        "details": str(e)}), 500)
 
     def delete(self, assignment_id):
         """
@@ -191,7 +193,9 @@ class AssignmentByID(Resource):
         try:
             db.session.delete(record)
             db.session.commit()
-            return make_response({"message": "Assignment successfully deleted"}, 200)
+            return make_response({"message": "Assignment successfully deleted"},
+                                200)
         except SQLAlchemyError as e:
             db.session.rollback()
-            return make_response(jsonify({"error": "Unable to delete assignment", "details": str(e)}), 500)
+            return make_response(jsonify({"error": "Unable to delete assignment",
+                                        "details": str(e)}), 500)

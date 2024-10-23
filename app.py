@@ -10,19 +10,19 @@ from flask_restful import Api
 from flasgger import Swagger
 from database import db
 from config import config
-from application.resources.assignmentResource import AssignmentResource, AssignmentByID
-from application.resources.attendanceResource import AttendanceResource, AttendanceByID
-from application.resources.commentsResource import CommentResource, CommentByID
-from application.resources.courseResource import CourseResource, CourseByID
-from application.resources.discussionResource import DiscussionResource, DiscussionByID
-from application.resources.enrollmentsResource import EnrollmentsResource, EnrollmentByID
-from application.resources.filesResource import FilesResource, FileByID
-from application.resources.gradesResource import GradesResource, GradeByID
-from application.resources.instructorsResource import InstructorResource, InstructorByID
-from application.resources.lecturesResource import LecturesResource, LectureByID
-from application.resources.notificationsResource import NotificationsResource, NotificationByID
-from application.resources.studentsResource import StudentResource, StudentByID
-from application.resources.submissionResource import SubmissionResource, SubmissionByID
+from application.resources.assignment_resource import AssignmentResource, AssignmentByID
+from application.resources.attendance_resource import AttendanceResource, AttendanceByID
+from application.resources.comments_resource import CommentResource, CommentByID
+from application.resources.course_resource import CourseResource, CourseByID
+from application.resources.discussion_resource import DiscussionResource, DiscussionByID
+from application.resources.enrollments_resource import EnrollmentsResource, EnrollmentByID
+from application.resources.files_resource import FilesResource, FileByID
+from application.resources.grades_resource import GradesResource, GradeByID
+from application.resources.instructors_resource import InstructorResource, InstructorByID
+from application.resources.lectures_resource import LecturesResource, LectureByID
+from application.resources.notifications_resource import NotificationsResource, NotificationByID
+from application.resources.students_resource import StudentResource, StudentByID
+from application.resources.submission_resource import SubmissionResource, SubmissionByID
 
 app = Flask(__name__)
 swagger = Swagger(app)
