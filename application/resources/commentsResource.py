@@ -1,24 +1,28 @@
-from database import db
-from application.models.comments import Comment
+"""Resource for handling comments."""
+
+from datetime import datetime
 from flask import jsonify, request, make_response
 from flask_restful import Resource
-from datetime import datetime
+from sqlalchemy.exc import SQLAlchemyError
+from database import db
+from application.models.comments import Comment
 
 class CommentResource(Resource):
+    """Resource for comment-related operations."""
 
     def get(self):
-        """
-        Get all comments
+        """Get all comments.
+
         ---
         responses:
-            200:
-                description: A list of comments
-                schema:
-                    type: array
-                    items:
-                        $ref: '#/definitions/Comment'
-            500:
-                description: Internal Server Error
+          200:
+            description: A list of comments
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Comment'
+          500:
+            description: Internal server error
         """
         try:
             comments = Comment.query.all()
@@ -26,51 +30,47 @@ class CommentResource(Resource):
         except Exception as e:
             print(f"An error occurred: {e}")
             return {"message": "Internal server error"}, 500
-        
+
     def post(self):
-        """
-        Create a new comment
+        """Create a new comment.
+
         ---
         parameters:
-            -in: formData
-            name: discussion_id
+          - name: discussion_id
+            in: formData
             type: integer
             required: true
-            description: Discussion ID for the comment
-            -in: formData
-            name: student_id
+          - name: student_id
+            in: formData
             type: integer
             required: true
-            description: Student ID for the comment
-            -in: formData
-            name: instructor_id
+          - name: instructor_id
+            in: formData
             type: integer
             required: true
-            description: Instructor ID for the comment
-            -in: formData
-            name: content
+          - name: content
+            in: formData
             type: string
             required: true
-            description: Comment content
-            -in: formData
-            name: posted_at
+          - name: posted_date
+            in: formData
             type: string
             format: date-time
-            required: true
-            description: Posted date for the comment
-            -in: formData
-            name: edited_at
+            required: false
+          - name: edited_date
+            in: formData
             type: string
             format: date-time
-            required: true
-            description: Edited date for the comment
+            required: false
         responses:
-            201:
-                description: Comment successfully created
-            400:
-                description: Missing required field
-            500:
-                description: Internal server error
+          201:
+            description: Comment successfully created
+            schema:
+              $ref: '#/definitions/Comment'
+          400:
+            description: Missing required field
+          500:
+            description: Unable to create comment
         """
         try:
             posted_date_str = request.form.get('posted_date')
@@ -79,70 +79,86 @@ class CommentResource(Resource):
             edited_date = datetime.fromisoformat(edited_date_str) if edited_date_str else datetime.now()
 
             new_comment = Comment(
-                discussion_id = request.form['discussion_id'],
-                student_id = request.form['student_id'],
-                instructor_id = request.form['instructor_id'],
-                content = request.form['content'],
-                posted_at = posted_date,
-                edited_date = edited_date,
+                discussion_id=request.form['discussion_id'],
+                student_id=request.form['student_id'],
+                instructor_id=request.form['instructor_id'],
+                content=request.form['content'],
+                posted_at=posted_date,
+                edited_at=edited_date,
             )
             db.session.add(new_comment)
             db.session.commit()
             response_dict = new_comment.to_dict()
-            response = make_response(jsonify(response_dict), 201)
-            return response
+            return make_response(jsonify(response_dict), 201)
         except KeyError as ke:
             print(f"Missing: {ke}")
             return make_response(jsonify({"error": f"Missing required field: {ke}"}), 400)
-        except Exception as e:
-            print(f"Error creating comment: {e}")
+        except SQLAlchemyError as e:
+            db.session.rollback()
             return make_response(jsonify({"error": "Unable to create comment", "details": str(e)}), 500)
-        
-class CommentByID(Resource):
 
-    def get(self, id):
-        """
-        Get comment by ID
+class CommentByID(Resource):
+    """Resource for comment operations by ID."""
+
+    def get(self, comment_id):
+        """Get comment by ID.
+
         ---
         parameters:
-            -in: path
-            name: id
+          - name: comment_id
+            in: path
             type: integer
             required: true
-            description: The ID of the comment to retrieve
         responses:
-            200:
-                description: Comment data
-            404:
-                description: Comment not found
-        """
-        response_dict = Comment.query.filter_by(id=id).first()
-        response = make_response(response_dict, 200)
-        return response
-    
-    def path(self, id):
-        """
-        Update comment by ID
-        ---
-        parameters:
-            -in: path
-            name: id
-            type: integer
-            required: true
-            description: The ID of the comment to update
-            -in: body
-            name: body
+          200:
+            description: Comment found
             schema:
-                $ref: '#/definitions/Comment'
-        responses:
-            200:
-                description: Comment successfully updated
-            400:
-                description: Invalid data or comment not found
+              $ref: '#/definitions/Comment'
+          404:
+            description: Comment not found
         """
-        record = Comment.query.filter_by(id=id).first()
+        response_dict = Comment.query.filter_by(id=comment_id).first()
+        if response_dict:
+            return make_response(jsonify(response_dict.to_dict()), 200)
+        return make_response(jsonify({"error": "Comment not found"}), 404)
+
+    def patch(self, comment_id):
+        """Update comment by ID.
+
+        ---
+        parameters:
+          - name: comment_id
+            in: path
+            type: integer
+            required: true
+          - name: comment
+            in: body
+            schema:
+              type: object
+              properties:
+                posted_at:
+                  type: string
+                  format: date-time
+                edited_at:
+                  type: string
+                  format: date-time
+                content:
+                  type: string
+        responses:
+          200:
+            description: Comment successfully updated
+            schema:
+              $ref: '#/definitions/Comment'
+          400:
+            description: Invalid data format
+          404:
+            description: Comment not found
+          500:
+            description: Unable to update comment
+        """
+        record = Comment.query.filter_by(id=comment_id).first()
         if not record:
-            return make_response(jsonify({"error": "Comment not found"}), 400)
+            return make_response(jsonify({"error": "Comment not found"}), 404)
         data = request.get_json()
         if not data:
             return make_response(jsonify({"error": "Invalid data format"}), 400)
@@ -155,42 +171,37 @@ class CommentByID(Resource):
                 if hasattr(record, attr):
                     setattr(record, attr, value)
         try:
-            db.session.add(record)
             db.session.commit()
             response_dict = record.to_dict()
             return make_response(jsonify(response_dict), 200)
-        except Exception as e:
+        except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(jsonify({"error": "Unable to update comment", "details": str(e)}), 500)
-        
-    def delete(self, id):
-        """
-        Delete assignment by ID
+
+    def delete(self, comment_id):
+        """Delete comment by ID.
+
         ---
         parameters:
-            -in: path
-            name: id
+          - name: comment_id
+            in: path
             type: integer
             required: true
-            description: The ID of the comment to delete
         responses:
-            200:
-                description: Comment successfully delete
-            404:
-                description: Comment not found
+          200:
+            description: Comment successfully deleted
+          404:
+            description: Comment not found
+          500:
+            description: Unable to delete comment
         """
-        record = Comment.query.filter_by(id=id).first()
-        if not record: 
+        record = Comment.query.filter_by(id=comment_id).first()
+        if not record:
             return make_response(jsonify({"error": "Comment not found"}), 404)
         try:
             db.session.delete(record)
             db.session.commit()
-            response_dict = {"message": "comment successfully deleted"}
-            response = make_response(
-                response_dict,
-                200
-            )
-            return response
-        except Exception as e:
+            return make_response({"message": "Comment successfully deleted"}, 200)
+        except SQLAlchemyError as e:
             db.session.rollback()
             return make_response(jsonify({"error": "Unable to delete comment", "details": str(e)}), 500)
