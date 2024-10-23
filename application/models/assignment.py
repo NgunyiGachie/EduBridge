@@ -2,19 +2,19 @@
 This module defines the Assignment model and its associated validations.
 """
 
-from database import db
-from sqlalchemy.orm import validates
 from datetime import datetime
+from sqlalchemy.orm import validates
+from database import db
 
 
 class Assignment(db.Model):
     """Model representing an assignment."""
 
     __tablename__ = 'assignments'
-    
+
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    title = db.Column(db.String(255), nullable=False)  
-    description = db.Column(db.String(1000), nullable=False) 
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
     course_id = db.Column(db.Integer, db.ForeignKey('courses.id'), nullable=False)
     due_date = db.Column(db.DateTime, nullable=False)
     total_points = db.Column(db.Integer, nullable=False)
@@ -30,14 +30,14 @@ class Assignment(db.Model):
         if not value.strip():
             raise ValueError(f'{key} must be a non-empty string')
         return value
-    
+
     @validates('due_date')
     def validate_due_date(self, key: str, value: datetime) -> datetime:
         """Validate that due_date is a valid datetime."""
         if not isinstance(value, datetime):
             raise ValueError(f"{key} must be a valid datetime")
         return value
-    
+
     @validates('total_points')
     def validate_total_points(self, key: str, total_points: int) -> int:
         """Validate that total_points is a non-negative integer."""
@@ -48,7 +48,7 @@ class Assignment(db.Model):
         if total_points < 0:
             raise ValueError("Total points must be greater than or equal to zero")
         return total_points
-    
+
     def to_dict(self) -> dict:
         """Convert the Assignment instance to a dictionary."""
         return {
@@ -56,10 +56,10 @@ class Assignment(db.Model):
             'title': self.title,
             'description': self.description,
             'course_id': self.course_id,
-            'due_date': self.due_date.isoformat() if self.due_date else None,  
+            'due_date': self.due_date.isoformat() if self.due_date else None,
             'total_points': self.total_points
         }
-    
+
     def __repr__(self) -> str:
         """Return string representation of the model instance."""
         return f"<Assignment {self.title}, ID: {self.id}>"
