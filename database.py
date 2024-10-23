@@ -11,9 +11,5 @@ migrate = Migrate()
 
 def init_db(app):
     """Initialize the database with the given Flask app."""
-    try:
-        db.init_app(app)
-        migrate.init_app(app, db)
-        print("Database initialized successfully.")
-    except Exception as e:
-        print(f"Error initializing the database: {e}")
+    db.init_app(app)
+    migrate.init_app(app, db)

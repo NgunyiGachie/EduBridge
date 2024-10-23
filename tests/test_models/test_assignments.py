@@ -1,3 +1,5 @@
+"""Test suite for the assignment model."""
+
 import pytest
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
@@ -18,7 +20,7 @@ class TestAssignment:
             db.session.rollback()
             db.drop_all()
 
-    def test_has_attributes(self, setup_teardown):
+    def test_has_attributes(self):
         """Test that the assignment model has required attributes."""
         with app.app_context():
             Assignment.query.delete()
@@ -44,7 +46,7 @@ class TestAssignment:
             assert created_assignment.total_points == 70
             assert created_assignment.id is not None
 
-    def test_requires_title(self, setup_teardown):
+    def test_requires_title(self):
         """Test that the title is a required field."""
         with app.app_context():
             Assignment.query.delete()
@@ -60,7 +62,7 @@ class TestAssignment:
                 db.session.add(assignment)
                 db.session.commit()
 
-    def test_requires_description(self, setup_teardown):
+    def test_requires_description(self):
         """Test that the description is a required field."""
         with app.app_context():
             Assignment.query.delete()
@@ -76,7 +78,7 @@ class TestAssignment:
                 db.session.add(assignment)
                 db.session.commit()
 
-    def test_requires_course_id(self, setup_teardown):
+    def test_requires_course_id(self):
         """Test that the course_id is a required field."""
         with app.app_context():
             Assignment.query.delete()
@@ -92,7 +94,7 @@ class TestAssignment:
                 db.session.add(assignment)
                 db.session.commit()
 
-    def test_requires_due_date(self, setup_teardown):
+    def test_requires_due_date(self):
         """Test that the due_date is a required field."""
         with app.app_context():
             Assignment.query.delete()
@@ -108,7 +110,7 @@ class TestAssignment:
                 db.session.add(assignment)
                 db.session.commit()
 
-    def test_requires_total_points(self, setup_teardown):
+    def test_requires_total_points(self):
         """Test that total_points is a required field."""
         with app.app_context():
             Assignment.query.delete()

@@ -1,3 +1,5 @@
+"""Test suite for the Discussion model."""
+
 import pytest
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
@@ -17,7 +19,7 @@ class TestDiscussion:
             db.session.rollback()
             db.drop_all()
 
-    def test_has_attributes(self, setup_teardown):
+    def test_has_attributes(self):
         """Test discussion model has attributes: title, description,
         course_id, created_at, updated_at."""
         with app.app_context():
@@ -44,7 +46,7 @@ class TestDiscussion:
             db.session.delete(new_discussion)
             db.session.commit()
 
-    def test_requires_title(self, setup_teardown):
+    def test_requires_title(self):
         """Requires each record to have a title."""
         with app.app_context():
             Discussion.query.delete()
@@ -60,7 +62,7 @@ class TestDiscussion:
                 db.session.add(discussion)
                 db.session.commit()
 
-    def test_requires_description(self, setup_teardown):
+    def test_requires_description(self):
         """Requires each record to have a description."""
         with app.app_context():
             Discussion.query.delete()
@@ -76,7 +78,7 @@ class TestDiscussion:
                 db.session.add(discussion)
                 db.session.commit()
 
-    def test_requires_course_id(self, setup_teardown):
+    def test_requires_course_id(self):
         """Requires each record to have a course_id."""
         with app.app_context():
             Discussion.query.delete()
@@ -92,7 +94,7 @@ class TestDiscussion:
                 db.session.add(discussion)
                 db.session.commit()
 
-    def test_requires_created_at(self, setup_teardown):
+    def test_requires_created_at(self):
         """Requires each record to have created_at."""
         with app.app_context():
             Discussion.query.delete()

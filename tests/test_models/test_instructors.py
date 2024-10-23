@@ -1,3 +1,5 @@
+"""Test suite for the Instructor model"""
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 from argon2 import PasswordHasher

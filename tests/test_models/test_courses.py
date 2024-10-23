@@ -1,4 +1,5 @@
-import datetime
+"""Test suite for the Course model."""
+
 import pytest
 from sqlalchemy.exc import IntegrityError
 from app import app

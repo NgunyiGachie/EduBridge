@@ -1,3 +1,5 @@
+"""Test suite for the attendance model."""
+
 import pytest
 from datetime import datetime
 from sqlalchemy.exc import IntegrityError
@@ -18,7 +20,7 @@ class TestAttendance:
             db.session.rollback()
             db.drop_all()
 
-    def test_has_attributes(self, setup_teardown):
+    def test_has_attributes(self):
         """Test that the attendance model has required attributes."""
         with app.app_context():
             Attendance.query.delete()
@@ -45,7 +47,7 @@ class TestAttendance:
             db.session.delete(new_attendance)
             db.session.commit()
 
-    def test_requires_student_id(self, setup_teardown):
+    def test_requires_student_id(self):
         """Test that the student_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
@@ -61,7 +63,7 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_lecture_id(self, setup_teardown):
+    def test_requires_lecture_id(self):
         """Test that the lecture_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
@@ -77,7 +79,7 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_instructor_id(self, setup_teardown):
+    def test_requires_instructor_id(self):
         """Test that the instructor_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
@@ -93,7 +95,7 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_attendance_status(self, setup_teardown):
+    def test_requires_attendance_status(self):
         """Test that the attendance_status is a required field."""
         with app.app_context():
             Attendance.query.delete()
@@ -109,7 +111,7 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_date(self, setup_teardown):
+    def test_requires_date(self):
         """Test that the date is a required field."""
         with app.app_context():
             Attendance.query.delete()

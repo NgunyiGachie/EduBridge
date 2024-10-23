@@ -1,8 +1,8 @@
 """Test suite for the File model."""
 
+from datetime import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError
-from datetime import datetime
 from app import app
 from database import db
 from application.models.files import File

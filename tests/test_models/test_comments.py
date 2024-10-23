@@ -1,3 +1,5 @@
+"""Test suite for the Comment model."""
+
 import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError

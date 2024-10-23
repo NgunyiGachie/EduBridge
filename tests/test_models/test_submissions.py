@@ -1,7 +1,7 @@
 """Test cases for the Submission model."""
 
-import pytest
 from datetime import datetime
+import pytest
 from sqlalchemy.exc import IntegrityError
 from app import app
 from database import db

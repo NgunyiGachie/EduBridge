@@ -1,4 +1,6 @@
-import datetime  # Move datetime import up
+"""Test suite for the Lecture model"""
+
+import datetime
 import pytest
 from sqlalchemy.exc import IntegrityError
 from app import app
@@ -9,7 +11,7 @@ class TestLectures:
     """Test case for the lecture model."""
 
     @pytest.fixture
-    def setup_teardown(self):  # Add self as first argument
+    def setup_teardown(self):  
         with app.app_context():
             db.create_all()
             yield
