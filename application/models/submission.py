@@ -53,11 +53,9 @@ class Submission(db.Model):
             'assignment_id': self.assignment_id,
             'grade_id': self.grade_id,
             'submission_info': self.submission_info,
-            'date': self.date.isoformat()  # Convert date to ISO format for JSON compatibility
+            'date': self.date.isoformat()
         }
 
     def __repr__(self):
         """Return string representation of the model instance."""
         return f"<Submission {self.id}>"
-
-# End of the file, ensure there is a newline after this line.

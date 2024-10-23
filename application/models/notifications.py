@@ -39,7 +39,7 @@ class Notification(db.Model):
         return value
 
     @validates('read_status')
-    def validate_read_status(self, key, value):
+    def validate_read_status(self, value):
         """Validate that the read_status is either 'read' or 'unread'."""
         if value is None:
             raise ValueError("Read status cannot be None")

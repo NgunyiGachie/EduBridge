@@ -20,7 +20,8 @@ class Discussion(db.Model):
     updated_at = db.Column(db.DateTime, nullable=False)
 
     course = db.relationship('Course', back_populates='discussion')
-    comments = db.relationship('Comment', back_populates='discussion', cascade='all, delete-orphan')
+    comments = db.relationship('Comment', back_populates='discussion',
+                            cascade='all, delete-orphan')
 
     @validates('title', 'description')
     def validate_strings(self, key, value):

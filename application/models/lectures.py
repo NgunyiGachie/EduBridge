@@ -19,7 +19,8 @@ class Lecture(db.Model):
     instructor_id = db.Column(db.Integer, db.ForeignKey('instructors.id'), nullable=False)
     schedule = db.Column(JSON, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    updated_at = db.Column(db.DateTime, nullable=False, default=datetime.utcnow, onupdate=datetime.utcnow)
+    updated_at = db.Column(db.DateTime, nullable=False,
+                        default=datetime.utcnow, onupdate=datetime.utcnow)
 
     instructor = db.relationship('Instructor', back_populates='lecture')
     attendance = db.relationship('Attendance', back_populates='lecture')

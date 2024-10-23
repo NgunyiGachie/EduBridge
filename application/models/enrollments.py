@@ -7,7 +7,10 @@ from sqlalchemy.orm import validates
 from database import db
 
 class Enrollment(db.Model):
-    """Represents a student's enrollment in a course with a status of 'enrolled', 'pending', or 'dropped'."""
+    """
+    Represents a student's enrollment in a course.
+    It includes statuses of 'enrolled', 'pending', or 'dropped'.
+    """
 
     __tablename__ = 'enrollments'
 

@@ -8,7 +8,10 @@ from sqlalchemy.orm import validates
 from database import db
 
 class File(db.Model):
-    """Represents an uploaded file with related metadata, including information, relation, and upload date."""
+    """
+    Represents an uploaded file with related metadata.
+    It also includes information, relation, and upload date.
+    """
 
     __tablename__ = 'files'
 

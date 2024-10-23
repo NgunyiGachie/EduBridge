@@ -70,7 +70,7 @@ class Instructor(db.Model):
         return value
 
     @validates('email')
-    def validate_email(self, key, email):
+    def validate_email(self, email):
         """Validate the email format and uniqueness."""
         if not email:
             raise AssertionError('No email provided')

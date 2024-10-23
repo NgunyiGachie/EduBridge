@@ -25,12 +25,18 @@ class Student(db.Model):
     _password_hash = db.Column(db.String, nullable=False)
     profile_picture = db.Column(db.String, nullable=False)
 
-    submission = db.relationship('Submission', back_populates='student', cascade="all, delete-orphan")
-    enrollment = db.relationship('Enrollment', back_populates='student', cascade="all, delete-orphan")
-    grade = db.relationship('Grade', back_populates='student', cascade="all, delete-orphan")
-    attendance = db.relationship('Attendance', back_populates='student', cascade="all, delete-orphan")
-    comments = db.relationship('Comment', back_populates='student', cascade="all, delete-orphan")
-    notification = db.relationship('Notification', back_populates='student', cascade="all, delete-orphan")
+    submission = db.relationship('Submission', back_populates='student',
+                                cascade="all, delete-orphan")
+    enrollment = db.relationship('Enrollment', back_populates='student',
+                                cascade="all, delete-orphan")
+    grade = db.relationship('Grade', back_populates='student',
+                            cascade="all, delete-orphan")
+    attendance = db.relationship('Attendance', back_populates='student',
+                                cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='student',
+                            cascade="all, delete-orphan")
+    notification = db.relationship('Notification', back_populates='student',
+                                cascade="all, delete-orphan")
 
     @property
     def password_hash(self):
@@ -62,7 +68,7 @@ class Student(db.Model):
         return value
 
     @validates("username")
-    def validate_username(self, key, username):
+    def validate_username(self, username):
         """Validate the username for uniqueness and length constraints."""
         if not username:
             raise AssertionError("No username provided")
@@ -73,7 +79,7 @@ class Student(db.Model):
         return username
 
     @validates('email')
-    def validate_email(self, key, email):
+    def validate_email(self, email):
         """Validate the email for uniqueness and format constraints."""
         if not email:
             raise AssertionError('No email provided')
