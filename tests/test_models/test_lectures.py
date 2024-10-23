@@ -1,36 +1,37 @@
+import datetime  # Move datetime import up
 import pytest
 from sqlalchemy.exc import IntegrityError
 from app import app
 from database import db
 from application.models.lectures import Lecture
-from datetime import datetime
 
 class TestLectures:
-    """Test case for the lecture model"""
+    """Test case for the lecture model."""
+
     @pytest.fixture
-    def setup_teardown(app):
+    def setup_teardown(self):  # Add self as first argument
         with app.app_context():
             db.create_all()
             yield
             db.session.rollback()
             db.drop_all()
 
-    def test_has__attributes(self):
-        """Has attributes: lecture_info, instructor_id, schedule, created_at, updated_at"""
+    def test_has_attributes(self):
+        """Test that the lecture has the required attributes."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
 
             lecture = Lecture(
                 lecture_info='ZOOL 102',
-                instructor_id=1, 
+                instructor_id=1,
                 schedule=[
                     {"day": "Monday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ],
-                created_at=datetime(2024, 9, 16),
-                updated_at=datetime(2024, 9, 16)
+                created_at=datetime.datetime(2024, 9, 16),
+                updated_at=datetime.datetime(2024, 9, 16)
             )
             db.session.add(lecture)
             db.session.commit()
@@ -44,31 +45,31 @@ class TestLectures:
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ]
-            assert created_lecture.created_at == datetime(2024, 9, 16)
-            assert created_lecture.updated_at == datetime(2024, 9, 16)
+            assert created_lecture.created_at == datetime.datetime(2024, 9, 16)
+            assert created_lecture.updated_at == datetime.datetime(2024, 9, 16)
 
     def test_requires_lecture_info(self):
-        """Requires each record to have lecture_info"""
+        """Test that lecture_info is required."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
 
             lecture = Lecture(
-                instructor_id=1, 
+                instructor_id=1,
                 schedule=[
                     {"day": "Monday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ],
-                created_at=datetime(2024, 9, 16),
-                updated_at=datetime(2024, 9, 16)
+                created_at=datetime.datetime(2024, 9, 16),
+                updated_at=datetime.datetime(2024, 9, 16)
             )
             with pytest.raises(IntegrityError):
                 db.session.add(lecture)
                 db.session.commit()
 
     def test_requires_instructor_id(self):
-        """Requires each record to have instructor_id"""
+        """Test that instructor_id is required."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
@@ -80,15 +81,15 @@ class TestLectures:
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ],
-                created_at=datetime(2024, 9, 16),
-                updated_at=datetime(2024, 9, 16)
+                created_at=datetime.datetime(2024, 9, 16),
+                updated_at=datetime.datetime(2024, 9, 16)
             )
             with pytest.raises(IntegrityError):
                 db.session.add(lecture)
                 db.session.commit()
 
     def test_requires_schedule(self):
-        """Requires each record to have schedule"""
+        """Test that schedule is required."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
@@ -96,15 +97,15 @@ class TestLectures:
             lecture = Lecture(
                 lecture_info='ZOOL 102',
                 instructor_id=1,
-                created_at=datetime(2024, 9, 16),
-                updated_at=datetime(2024, 9, 16)
+                created_at=datetime.datetime(2024, 9, 16),
+                updated_at=datetime.datetime(2024, 9, 16)
             )
             with pytest.raises(IntegrityError):
                 db.session.add(lecture)
                 db.session.commit()
 
     def test_requires_created_at(self):
-        """Requires each record to have created_at"""
+        """Test that created_at is required."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
@@ -117,14 +118,14 @@ class TestLectures:
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ],
-                updated_at=datetime(2024, 9, 16)
+                updated_at=datetime.datetime(2024, 9, 16)
             )
             with pytest.raises(IntegrityError):
                 db.session.add(lecture)
                 db.session.commit()
 
     def test_requires_updated_at(self):
-        """Requires each record to have updated_at"""
+        """Test that updated_at is required."""
         with app.app_context():
             Lecture.query.delete()
             db.session.commit()
@@ -137,10 +138,8 @@ class TestLectures:
                     {"day": "Wednesday", "start": "09:00 AM", "end": "10:30 AM"},
                     {"day": "Friday", "start": "09:00 AM", "end": "10:30 AM"}
                 ],
-                created_at=datetime(2024, 9, 16)
+                created_at=datetime.datetime(2024, 9, 16)
             )
             with pytest.raises(IntegrityError):
                 db.session.add(lecture)
                 db.session.commit()
-
-    

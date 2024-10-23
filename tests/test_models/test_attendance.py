@@ -1,22 +1,25 @@
 import pytest
+from datetime import datetime
 from sqlalchemy.exc import IntegrityError
 from app import app
 from database import db
 from application.models.attendance import Attendance
-from datetime import datetime
+
 
 class TestAttendance:
-    """Test case for the attendance model"""
+    """Test case for the Attendance model."""
+
     @pytest.fixture
-    def setup_teardown(app):
+    def setup_teardown(self):
+        """Set up and tear down the test database."""
         with app.app_context():
             db.create_all()
             yield
             db.session.rollback()
             db.drop_all()
 
-    def test_has_attributes(self):
-        """Test attendance model has attributes: student_id, lecture_id, instructor_id, attendance_status, date"""
+    def test_has_attributes(self, setup_teardown):
+        """Test that the attendance model has required attributes."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -41,9 +44,9 @@ class TestAttendance:
 
             db.session.delete(new_attendance)
             db.session.commit()
-            
-    def test_requires_student_id(self):
-        """Requires each record to have a student_id"""
+
+    def test_requires_student_id(self, setup_teardown):
+        """Test that the student_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -57,10 +60,9 @@ class TestAttendance:
             with pytest.raises(IntegrityError):
                 db.session.add(attendance)
                 db.session.commit()
-            
 
-    def test_requires_lecture_id(self):
-        """Requires each record to have a lecture_id"""
+    def test_requires_lecture_id(self, setup_teardown):
+        """Test that the lecture_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -75,8 +77,8 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_instructor_id(self):
-        """Requires each record to have an instructor_id"""
+    def test_requires_instructor_id(self, setup_teardown):
+        """Test that the instructor_id is a required field."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -91,8 +93,8 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_attendance_status(self):
-        """Requires each record to have attendance_status"""
+    def test_requires_attendance_status(self, setup_teardown):
+        """Test that the attendance_status is a required field."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -107,8 +109,8 @@ class TestAttendance:
                 db.session.add(attendance)
                 db.session.commit()
 
-    def test_requires_date(self):
-        """Requires each record to have a date"""
+    def test_requires_date(self, setup_teardown):
+        """Test that the date is a required field."""
         with app.app_context():
             Attendance.query.delete()
             db.session.commit()
@@ -122,8 +124,3 @@ class TestAttendance:
             with pytest.raises(IntegrityError):
                 db.session.add(attendance)
                 db.session.commit()
-    
-            
-    
-
-        
