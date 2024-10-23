@@ -5,7 +5,6 @@ It initializes the app, sets up configurations, and registers routes.
 
 import os
 from flask import Flask
-from flasgger import Swagger
 from flask_migrate import Migrate
 from flask_restful import Api
 from database import db
@@ -68,4 +67,3 @@ if __name__ == '__main__':
         app.run(host='0.0.0.0', port=port, debug=True)
     except (ValueError, RuntimeError) as e:
         print(f"An error occurred: {e}")
-
