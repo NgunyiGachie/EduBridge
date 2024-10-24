@@ -36,14 +36,16 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-pip-
 
-    - name: Show memory usage before running Pylint
-      run: free -h
+    # Set PYTHONPATH for Pylint
+    - name: Set PYTHONPATH
+      run: echo "PYTHONPATH=$(pwd)" >> $GITHUB_ENV
 
-    # Split Pylint run to avoid resource exhaustion
-    - name: Run Pylint on app directory
+    # Run Pylint on the application directory
+    - name: Run Pylint on application directory
       run: |
-        pylint --jobs=2 app/
+        pylint --jobs=2 application/
 
+    # Run Pylint on the tests directory
     - name: Run Pylint on tests directory
       run: |
         pylint --jobs=2 tests/
